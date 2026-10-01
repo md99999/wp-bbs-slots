@@ -1,5 +1,9 @@
 # Security Policy
 
+> **Found a security issue? Please email [sysop@maddogproductions.online](mailto:sysop@maddogproductions.online).**
+> If you find any security problem in WP BBS Slots, however small, report it privately to that address
+> rather than opening a public issue or posting it anywhere else.
+
 ## Reporting a vulnerability
 
 Please report security problems privately, by email, rather than opening a public issue:
@@ -83,3 +87,7 @@ As set out in the [README](README.md) and the [GNU General Public License v2](LI
 software is provided **as is, without warranty of any kind**. You install and run it at your own
 risk, and the author accepts no responsibility or liability for any loss, damage or compromise
 arising from its use.
+
+## Contact
+
+If you find any security issue in WP BBS Slots, please email **sysop@maddogproductions.online**.
