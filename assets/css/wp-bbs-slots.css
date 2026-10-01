@@ -164,6 +164,8 @@
 .wpbbs-game.wpbbs-game .wpbbs-paytable .wpbbs-sym-jackpot .wpbbs-sym-icon { font-size: .55em; padding: .3em .15em; }
 
 .wpbbs-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 8px 0; }
+/* Themes often stretch selects to the full column; the wager list only needs room for "5,000". */
+.wpbbs-game.wpbbs-game .wpbbs-controls select { width: auto; min-width: 0; max-width: 9em; flex: 0 0 auto; padding-right: 28px; }
 .wpbbs-game.wpbbs-game .wpbbs-pull {
   font-size: 1.3em; font-weight: bold; letter-spacing: .1em; text-transform: uppercase; padding: 10px 34px;
   background: var(--wpbbs-red); border-color: var(--wpbbs-red); color: #fff; border-radius: 30px;
