@@ -49,7 +49,7 @@ $today = WPBBS_Player::played_today(50);
 $top = WPBBS_Player::top(20);
 $labels = [
     'new_player' => 'New player', 'jackpot' => 'JACKPOT', 'big_win' => 'Big win', 'record' => 'Record',
-    'rank' => 'Rank', 'bailout' => 'Bailout', 'topup' => 'New day',
+    'rank' => 'Rank', 'bailout' => 'Bailout', 'topup' => 'New day', 'season' => 'New season',
 ];
 ?>
 <div class="wpbbs-panel wpbbs-masthead">

@@ -15,7 +15,7 @@ class WPBBS_Admin {
         'wpbbs_maintenance' => ['Maintenance', 'maintenance'],
     ];
 
-    const POST_ACTIONS = ['setup_pages', 'save_settings', 'player_update', 'player_delete', 'run_maintenance', 'reset_jackpot'];
+    const POST_ACTIONS = ['setup_pages', 'save_settings', 'player_update', 'player_delete', 'run_maintenance', 'reset_jackpot', 'reset_scores', 'reset_all'];
 
     public static function init() {
         add_action('admin_menu', [__CLASS__, 'menu']);
@@ -43,6 +43,8 @@ class WPBBS_Admin {
             .wpbbs-admin .wpbbs-danger{border-left:4px solid #d63638;background:#fff;padding:12px 16px;margin:16px 0;max-width:860px}
             .wpbbs-admin .wpbbs-box{background:#fff;border:1px solid #c3c4c7;padding:12px 16px;margin:16px 0;max-width:860px}
             .wpbbs-admin input.small-text{width:110px}
+            .wpbbs-admin .wpbbs-danger-zone{border:2px solid #d63638;border-left-width:6px}
+            .wpbbs-admin .wpbbs-danger-zone>h2{color:#d63638;letter-spacing:.05em}
         ');
     }
 
@@ -251,11 +253,49 @@ class WPBBS_Admin {
         self::notice('success', $result);
     }
 
+    /** The resets in the DANGER SECTION need the warning box ticked and $word typed exactly. */
+    private static function confirm($word, $what) {
+        if (!self::post('confirm_warning') || trim(self::post('confirm_text')) !== $word) {
+            throw new WPBBS_Exception(sprintf('%s cancelled: tick the warning box and type %s to confirm.', $what, $word));
+        }
+    }
+
+    /** A new season: every player back to the starting bankroll and spins, stats cleared. The Hall of Fame is kept. */
+    private static function do_reset_scores() {
+        global $wpdb;
+        self::confirm('SCORES', 'Score reset');
+        $s = WPBBS_Settings::all();
+        $today = WPBBS_Game::today();
+        $count = (int) $wpdb->query($wpdb->prepare(
+            'UPDATE ' . WPBBS_DB::t('players') . ' SET bankroll = %d, peak_bankroll = %d, spins_left = %d, spins_date = %s, topup_date = %s,
+                bailout_date = NULL, last_bet = %d, today_spins = 0, today_won = 0, total_spins = 0, total_wins = 0, total_won = 0,
+                biggest_win = 0, current_streak = 0, best_streak = 0, jackpots_won = 0',
+            $s['starting_bankroll'], $s['starting_bankroll'], $s['turns_per_day'], $today, $today, WPBBS_Game::min_bet()
+        ));
+        WPBBS_Log::news('season', sprintf('A new season begins! Every player starts again with %s credits. The Hall of Fame remembers the last one.',
+            WPBBS_Game::fmt($s['starting_bankroll'])));
+        WPBBS_Log::admin('reset', sprintf('All scores reset: %d players back to %d credits.', $count, $s['starting_bankroll']));
+        self::notice('success', sprintf('All scores reset: %d players are back to %s credits and %d spins.', $count,
+            WPBBS_Game::fmt($s['starting_bankroll']), $s['turns_per_day']));
+    }
+
+    /** Back to new: all game data deleted and the progressive reseeded. Settings and pages are kept. */
+    private static function do_reset_all() {
+        global $wpdb;
+        self::confirm('NEW GAME', 'Game reset');
+        foreach (['players', 'jackpots', 'records', 'monthly', 'news', 'admin_log'] as $table) {
+            $wpdb->query('DELETE FROM ' . WPBBS_DB::t($table));
+        }
+        WPBBS_Installer::seed_state();
+        $wpdb->update(WPBBS_DB::t('state'), ['state_value' => WPBBS_Settings::get('jackpot_seed'), 'updated_at' => current_time('mysql')], ['state_key' => 'jackpot']);
+        delete_option('wpbbs_last_daily');
+        WPBBS_Log::admin('reset', 'Game reset to new: all players, scores, records and news deleted.');
+        self::notice('success', 'The game has been reset to new. Every player will choose a player name again.');
+    }
+
     private static function do_reset_jackpot() {
         global $wpdb;
-        if (!self::post('confirm_warning') || trim(self::post('confirm_text')) !== 'RESET') {
-            throw new WPBBS_Exception('Jackpot reset cancelled: tick the warning box and type RESET to confirm.');
-        }
+        self::confirm('RESET', 'Jackpot reset');
         $seed = WPBBS_Settings::get('jackpot_seed');
         WPBBS_Installer::seed_state();
         $wpdb->update(WPBBS_DB::t('state'), ['state_value' => $seed, 'updated_at' => current_time('mysql')], ['state_key' => 'jackpot']);

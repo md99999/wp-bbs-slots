@@ -53,13 +53,5 @@ $cmd = function ($command) {
         Choose the hour that matches your local midnight.</p>
 </div>
 
-<div class="wpbbs-danger">
-    <h2>Reset the progressive jackpot</h2>
-    <p>Sets the progressive back to its starting value of <?php echo esc_html(WPBBS_Game::fmt(WPBBS_Settings::get('jackpot_seed'))); ?>
-        without anyone winning it. This cannot be undone.</p>
-    <?php echo WPBBS_Admin::form_open('reset_jackpot'); ?>
-        <p><label><input type="checkbox" name="confirm_warning" value="1"> I understand the current jackpot will be lost.</label></p>
-        <p><label>Type <code>RESET</code> to confirm: <input type="text" name="confirm_text" class="small-text"></label></p>
-        <?php submit_button('Reset the jackpot', 'delete', 'submit', false); ?>
-    </form>
-</div>
+<p class="description" style="max-width:860px">Resetting the jackpot, the scores or the whole game is under
+    <a href="<?php echo esc_url(admin_url('admin.php?page=wpbbs_settings#wpbbs-danger')); ?>">Settings &rarr; DANGER SECTION</a>.</p>

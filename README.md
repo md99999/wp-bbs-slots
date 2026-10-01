@@ -216,12 +216,19 @@ The **WP BBS Slots** menu in wp-admin (administrators only):
   link), widget shortcodes and recent admin activity.
 - **Settings:** spins per day (1 to 50), catch-up days (up to 7), starting bankroll, daily top-up,
   bailout threshold and amount, starting jackpot and the amount each spin adds, Gazette options,
-  whether new players may join, and **Delete all data** on uninstall.
+  whether new players may join, and **Delete all data** on uninstall. At the foot is the
+  **DANGER SECTION**, whose resets cannot be undone and each need a box ticked and a word typed:
+  - **Reset the progressive jackpot** to its starting value without anyone winning it (type `RESET`).
+  - **Reset all scores**, for a new season: every player keeps their name but goes back to the
+    starting bankroll and spins with their stats cleared; the Hall of Fame, jackpot winners, monthly
+    bests and the progressive are kept (type `SCORES`).
+  - **Reset the game to new**: every player, score, record, jackpot win, monthly best, news item and
+    the admin log are deleted and the progressive is reseeded. Settings, pages and WordPress accounts
+    are kept (type `NEW GAME`).
 - **Players:** every player with their score and spins; edit a score or spins left, or **delete a
   player** who has left the game or asks for their data to be removed. Their row, monthly history and
   news are deleted; Hall of Fame entries they held stay as "A former player".
-- **Maintenance:** run the daily job now, see when it last and next runs, copy-ready cron commands,
-  and reset the progressive.
+- **Maintenance:** run the daily job now, see when it last and next runs, and copy-ready cron commands.
 
 Every admin action posts to `admin-post.php` with a nonce and a capability check, and is recorded in
 the admin log shown on the Dashboard. The disclaimer is shown at the foot of every admin screen.

@@ -63,3 +63,38 @@ $fields = [
     </table>
     <?php submit_button('Save settings'); ?>
 </form>
+
+<div class="wpbbs-danger wpbbs-danger-zone" id="wpbbs-danger">
+    <h2>DANGER SECTION</h2>
+    <p><strong>Everything here resets game data for every player at once, and cannot be undone.</strong> Take a database backup first.
+        Each reset needs the box ticked and the word typed exactly, and is recorded in the admin log. Settings and the game pages are never touched.</p>
+
+    <h3>Reset the progressive jackpot</h3>
+    <p>Sets the progressive back to <?php echo esc_html(WPBBS_Game::fmt($s['jackpot_seed'])); ?> without anyone winning it.
+        Players, scores and the Hall of Fame are kept.</p>
+    <?php echo WPBBS_Admin::form_open('reset_jackpot'); ?>
+        <p><label><input type="checkbox" name="confirm_warning" value="1" required> I understand the current jackpot will be lost.</label></p>
+        <p><label>Type <code>RESET</code> to confirm: <input type="text" name="confirm_text" class="small-text" required autocomplete="off"></label></p>
+        <?php submit_button('Reset the jackpot', 'delete', 'submit', false); ?>
+    </form>
+
+    <h3>Reset all scores (a new season)</h3>
+    <p>Every player keeps their player name but goes back to <?php echo esc_html(WPBBS_Game::fmt($s['starting_bankroll'])); ?> credits and
+        <?php echo (int) $s['turns_per_day']; ?> spins, with their wins, streaks and other stats cleared. The Hall of Fame, jackpot winners,
+        monthly bests and the progressive are kept, so past seasons stay on record. The Gazette announces the new season.</p>
+    <?php echo WPBBS_Admin::form_open('reset_scores'); ?>
+        <p><label><input type="checkbox" name="confirm_warning" value="1" required> I understand every player's score will be lost.</label></p>
+        <p><label>Type <code>SCORES</code> to confirm: <input type="text" name="confirm_text" class="small-text" required autocomplete="off"></label></p>
+        <?php submit_button('Reset all scores', 'delete', 'submit', false); ?>
+    </form>
+
+    <h3>Reset the game to new</h3>
+    <p>Deletes every player, score, Hall of Fame record, jackpot win, monthly best, Gazette item and the admin log, and sets the progressive
+        back to <?php echo esc_html(WPBBS_Game::fmt($s['jackpot_seed'])); ?>: the game as it was the day it was installed. Players' WordPress
+        accounts are kept, and each will choose a player name again.</p>
+    <?php echo WPBBS_Admin::form_open('reset_all'); ?>
+        <p><label><input type="checkbox" name="confirm_warning" value="1" required> I understand all game data will be permanently deleted.</label></p>
+        <p><label>Type <code>NEW GAME</code> to confirm: <input type="text" name="confirm_text" class="regular-text" required autocomplete="off"></label></p>
+        <?php submit_button('Reset the game to new', 'delete', 'submit', false); ?>
+    </form>
+</div>
