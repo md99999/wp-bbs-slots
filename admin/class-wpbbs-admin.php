@@ -248,7 +248,8 @@ class WPBBS_Admin {
     }
 
     private static function do_run_maintenance() {
-        $result = WPBBS_Maintenance::daily(true);
+        $u = wp_get_current_user();
+        $result = WPBBS_Maintenance::daily(true, 'Run now by ' . $u->user_login);
         WPBBS_Log::admin('maintenance', 'Manual run: ' . $result);
         self::notice('success', $result);
     }

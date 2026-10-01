@@ -17,6 +17,6 @@ global $wpdb;
 foreach (['players', 'state', 'jackpots', 'records', 'monthly', 'news', 'admin_log'] as $table) {
     $wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . 'wpbbs_' . $table);
 }
-foreach (['wpbbs_settings', 'wpbbs_db_version', 'wpbbs_page_ids', 'wpbbs_nav_post_id', 'wpbbs_last_daily'] as $option) {
+foreach (['wpbbs_settings', 'wpbbs_db_version', 'wpbbs_page_ids', 'wpbbs_nav_post_id', 'wpbbs_last_daily', 'wpbbs_daily_log'] as $option) {
     delete_option($option);
 }

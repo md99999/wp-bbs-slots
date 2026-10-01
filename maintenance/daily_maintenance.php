@@ -5,4 +5,4 @@
  */
 if (PHP_SAPI !== 'cli') exit("CLI only.\n");
 require_once __DIR__ . '/bootstrap.php';
-echo WPBBS_Maintenance::daily() . "\n";
+echo WPBBS_Maintenance::daily(false, 'Server cron') . "\n";

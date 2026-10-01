@@ -228,7 +228,9 @@ The **WP BBS Slots** menu in wp-admin (administrators only):
 - **Players:** every player with their score and spins; edit a score or spins left, or **delete a
   player** who has left the game or asks for their data to be removed. Their row, monthly history and
   news are deleted; Hall of Fame entries they held stay as "A former player".
-- **Maintenance:** run the daily job now, see when it last and next runs, and copy-ready cron commands.
+- **Maintenance:** run the daily job now, see when it last and next runs, a **daily job log** (one line
+  per day for the last 10 days: when it ran, what started it, what it did, and how many attempts there
+  were), and copy-ready cron commands.
 
 Every admin action posts to `admin-post.php` with a nonce and a capability check, and is recorded in
 the admin log shown on the Dashboard. The disclaimer is shown at the foot of every admin screen.
@@ -314,4 +316,4 @@ All tables use the site's table prefix (shown as `wp_`).
 | wp_wpbbs_news | the Gazette |
 | wp_wpbbs_admin_log | admin audit log |
 
-Options: `wpbbs_settings`, `wpbbs_db_version`, `wpbbs_page_ids`, `wpbbs_nav_post_id`, `wpbbs_last_daily`.
+Options: `wpbbs_settings`, `wpbbs_db_version`, `wpbbs_page_ids`, `wpbbs_nav_post_id`, `wpbbs_last_daily`, `wpbbs_daily_log`.
