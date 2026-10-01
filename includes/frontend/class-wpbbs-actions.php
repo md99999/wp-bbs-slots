@@ -34,7 +34,7 @@ class WPBBS_Actions {
                 case 'spin':
                     $p = WPBBS_Player::current();
                     if (!$p) throw new WPBBS_Exception('Choose a player name first.');
-                    $r = WPBBS_Slots::spin($p, (int) self::field('bet', '0'));
+                    $r = WPBBS_Slots::spin($p, self::bet());
                     $faces = implode(' | ', array_map(function ($k) { return WPBBS_Game::SYMBOLS[$k]['label']; }, $r['reels']));
                     WPBBS_UI::flash($r['win'] > 0 ? 'success' : 'info', '[ ' . $faces . " ]\n" . $r['message']);
                     foreach ($r['news'] as $line) WPBBS_UI::flash('success', $line);
@@ -59,7 +59,7 @@ class WPBBS_Actions {
         try {
             $p = WPBBS_Player::current();
             if (!$p) throw new WPBBS_Exception('Choose a player name first.');
-            wp_send_json_success(WPBBS_Slots::spin($p, (int) self::field('bet', '0')));
+            wp_send_json_success(WPBBS_Slots::spin($p, self::bet()));
         } catch (WPBBS_Exception $e) {
             $p = WPBBS_Player::current() ? WPBBS_Player::fresh(WPBBS_Player::current()->id) : null;
             wp_send_json_error([
@@ -74,6 +74,15 @@ class WPBBS_Actions {
     /** The current progressive, for the ticker on the play page. Public and read-only. */
     public static function ajax_jackpot() {
         wp_send_json_success(['jackpot' => WPBBS_Game::jackpot()]);
+    }
+
+    /**
+     * The posted wager. Only plain digits are accepted, so "5000 OR 1=1" or "1e3" is refused rather
+     * than cast to a number; WPBBS_Slots::spin() then checks it against the fixed list of wagers.
+     */
+    private static function bet() {
+        $bet = trim(self::field('bet'));
+        return (ctype_digit($bet) && strlen($bet) <= 6) ? (int) $bet : 0;
     }
 
     /**

@@ -31,10 +31,11 @@ flawless: it is what to check, and where a mistake would most likely be.
 
 - **A player can send only two things:** a player name and a wager.
   - The **player name** goes through `sanitize_text_field()`, is limited to 3 to 20 characters, and
-    must match a whitelist of letters, numbers, spaces, dots, dashes and underscores. It is stored
-    once and never changed by the player.
-  - The **wager** is cast to an integer and must be one of the fixed values in `WPBBS_Game::BETS`;
-    anything else is refused.
+    must match a whitelist of letters, numbers, spaces, dots, dashes and underscores. Names that could
+    pass for staff or the game (admin, sysop, moderator and the like) are refused. It is stored once
+    and never changed by the player.
+  - The **wager** must be plain digits (so `5000 OR 1=1` or `1e3` is refused rather than cast) and
+    one of the fixed values in `WPBBS_Game::BETS`; anything else is refused.
 - **Every game action carries a WordPress nonce**, checked before anything happens, and requires a
   signed-in user. The spin is a POST to `admin-ajax.php` (`wp_ajax_` only, so never for visitors who
   are not signed in), with a plain form POST as the fallback when JavaScript is off.
@@ -47,6 +48,8 @@ flawless: it is what to check, and where a mistake would most likely be.
   JavaScript builds the reels with `textContent`, never `innerHTML`.
 - **No file paths come from user input.** The only dynamic `include` statements use keys from fixed
   lists of pages and admin screens, so directory traversal and file inclusion have nothing to act on.
+- **Every folder has an empty `index.php`** and every PHP file exits when loaded directly, so the
+  plugin's files cannot be listed or run on their own over the web.
 - **No shell, `eval()`, `unserialize()` or dynamic code execution** anywhere in the plugin.
 - **Admin functions require `manage_options`** plus their own nonce, and are logged.
 - **Redirects are validated** with `wp_validate_redirect()` and `wp_safe_redirect()`.

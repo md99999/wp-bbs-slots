@@ -9,6 +9,10 @@ class WPBBS_Player {
     const NAME_MIN = 3;
     const NAME_MAX = 20;
 
+    /** Player names nobody may take (compared without spaces or punctuation, ignoring case). */
+    const RESERVED = ['admin', 'administrator', 'sysop', 'moderator', 'webmaster', 'root', 'system', 'staff',
+                      'support', 'house', 'thehouse', 'dealer', 'wpbbsslots', 'aformerplayer', 'nobody', 'anonymous'];
+
     private static $current = false;
 
     /** The signed-in user's player, or null. Applies the new-day spins and top-up. */
@@ -115,6 +119,15 @@ class WPBBS_Player {
         }
         if (!preg_match('/^[A-Za-z0-9](?:[A-Za-z0-9 ._\-]*[A-Za-z0-9])?$/', $name)) {
             throw new WPBBS_Exception('Use letters, numbers, spaces, dots, dashes and underscores only, starting and ending with a letter or number.');
+        }
+        // Names that could pass for the site's staff or the game itself.
+        $bare = strtolower(preg_replace('/[^a-z0-9]/i', '', $name));
+        $staff = ['admin', 'sysop', 'moderator', 'webmaster'];
+        foreach (self::RESERVED as $word) {
+            $starts = in_array($word, $staff, true) && strpos($bare, $word) === 0;
+            if ($bare === $word || $starts) {
+                throw new WPBBS_Exception('That player name is reserved. Please choose another.');
+            }
         }
         return $name;
     }
