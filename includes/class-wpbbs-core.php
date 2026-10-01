@@ -136,7 +136,7 @@ class WPBBS_Game {
     const PAIR_PAYS = 2;
 
     /** The wagers a player may choose. */
-    const BETS = [100, 500, 1000, 5000];
+    const BETS = [100, 200, 300, 400, 500, 1000, 2500, 5000];
 
     /** Bankroll thresholds and titles, lowest first. The Hall of Fame records who reached each first. */
     const RANKS = [

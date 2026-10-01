@@ -63,7 +63,7 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 1. **Sign in** to the WordPress site and open the **WP BBS Slots** page, which explains the game.
 2. Go to **Play** and **choose a player name**. It is yours for good; nobody else can take it.
 3. New players start with **10,000 credits**. Your bankroll is your score.
-4. **Choose a wager**: 100, 500, 1,000 or 5,000 credits. It stays set from spin to spin until you
+4. **Choose a wager**: 100, 200, 300, 400, 500, 1,000, 2,500 or 5,000 credits. It stays set from spin to spin until you
    change it, or until your bankroll can no longer cover it, when it is lowered for you.
 5. **Pull the handle**: click **Pull**, or press **Enter** or the **space bar**.
 6. The three reels spin. The first stops after three seconds, the second a second later and the
