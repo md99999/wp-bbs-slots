@@ -20,6 +20,27 @@ class WPBBS_Maintenance {
         wp_clear_scheduled_hook(self::DAILY_HOOK);
     }
 
+    /**
+     * Moves the job to the next midnight in the site's current timezone. Called when the timezone
+     * under Settings -> General changes, and after each run so daylight saving never leaves it an
+     * hour off.
+     */
+    public static function reschedule() {
+        self::unschedule();
+        self::schedule();
+    }
+
+    /** When the job is next due to start, as a Unix timestamp, or 0. */
+    public static function next_run() {
+        return (int) wp_next_scheduled(self::DAILY_HOOK);
+    }
+
+    /** True when the next run is not at a midnight in the site's timezone. */
+    public static function off_midnight() {
+        $next = self::next_run();
+        return $next && wp_date('H:i', $next) !== '00:00';
+    }
+
     /*
      * Running WP-Cron and a real cron job side by side is safe. The job takes a database lock
      * before doing anything, so only one run happens at a time whatever started it, and it
@@ -46,7 +67,8 @@ class WPBBS_Maintenance {
     }
 
     /**
-     * Tops every bankroll under the daily floor up to it and purges old news.
+     * Gives every player the day's spins, tops every bankroll under the daily floor up to it and
+     * purges old news.
      * Runs at most once per calendar day (site timezone) unless $force is set.
      */
     public static function daily($force = false) {
@@ -71,6 +93,7 @@ class WPBBS_Maintenance {
         global $wpdb;
         WPBBS_Installer::seed_state();
         $floor = WPBBS_Settings::get('daily_floor');
+        $granted = WPBBS_Player::grant_spins();
         $topped = WPBBS_Player::topup();
         if ($topped) {
             WPBBS_Log::news('topup', sprintf('A new day at the machine: %d %s topped up to %s credits.',
@@ -79,7 +102,14 @@ class WPBBS_Maintenance {
         $cutoff = wp_date('Y-m-d H:i:s', time() - WPBBS_Settings::get('news_retention_days') * DAY_IN_SECONDS);
         $purged = (int) $wpdb->query($wpdb->prepare('DELETE FROM ' . WPBBS_DB::t('news') . ' WHERE created_at < %s', $cutoff));
         update_option('wpbbs_last_daily', current_time('mysql'), false);
-        return sprintf('Daily maintenance: %d %s topped up to %s credits, %d old news items purged.',
-            $topped, $topped === 1 ? 'player' : 'players', WPBBS_Game::fmt($floor), $purged);
+        return sprintf('Daily maintenance for %s: %d %s given the day\'s spins, %d topped up to %s credits, %d old news items purged.',
+            WPBBS_Game::today(), $granted, $granted === 1 ? 'player' : 'players', $topped, WPBBS_Game::fmt($floor), $purged);
+    }
+
+    /** The WP-Cron entry point: the daily job, then back on to local midnight if it has drifted. */
+    public static function cron() {
+        $result = self::daily();
+        if (self::off_midnight()) self::reschedule();
+        return $result;
     }
 }

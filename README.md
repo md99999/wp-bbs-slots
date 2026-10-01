@@ -235,10 +235,11 @@ the admin log shown on the Dashboard. The disclaimer is shown at the foot of eve
 
 ### Scheduled maintenance (cron)
 
-One job runs daily at the site's midnight: every bankroll under 10,000 is topped up to 10,000, and
-old news is purged. Players are also topped up and given their spins the first time they visit on a
-new day, so the game works even if cron never runs; cron simply makes the top-up show on the scores
-at midnight.
+One job runs daily at midnight in the site's timezone (**Settings → General → Timezone**): every
+player is given the day's spins, every bankroll under 10,000 is topped up to 10,000, and old news is
+purged. If you change the site's timezone, the job moves to the new midnight by itself. Players are
+also given their spins and topped up the first time they visit on a new day, so the game works even
+if cron never runs; cron makes the new day show on the scores and the Players screen at midnight.
 
 WP-Cron only runs when someone visits the site. For a live game add a real cron job in your hosting
 control panel. The recommended job runs every 5 minutes and triggers all of WordPress's scheduled

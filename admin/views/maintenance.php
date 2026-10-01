@@ -1,8 +1,10 @@
 <?php
 if (!defined('ABSPATH')) exit;
-if (!wp_next_scheduled(WPBBS_Maintenance::DAILY_HOOK)) WPBBS_Maintenance::schedule();
-$next = wp_next_scheduled(WPBBS_Maintenance::DAILY_HOOK);
+// Keep the job on midnight in the site's timezone, even if that was changed before this version.
+if (!WPBBS_Maintenance::next_run() || WPBBS_Maintenance::off_midnight()) WPBBS_Maintenance::reschedule();
+$next = WPBBS_Maintenance::next_run();
 $next = $next ? wp_date('Y-m-d H:i:s', $next) : 'not scheduled';
+$tz = wp_timezone_string();
 $cron_url = home_url('/wp-cron.php?doing_wp_cron');
 $php_bin = defined('PHP_BINARY') && PHP_BINARY ? PHP_BINARY : 'php';
 $daily_php = WPBBS_PATH . 'maintenance/daily_maintenance.php';
@@ -19,15 +21,18 @@ $cmd = function ($command) {
     <tbody>
         <tr>
             <td><strong>Daily</strong></td>
-            <td>Tops every bankroll under <?php echo esc_html($floor); ?> up to <?php echo esc_html($floor); ?>, and purges old news.</td>
+            <td>Gives every player the day's spins, tops every bankroll under <?php echo esc_html($floor); ?> up to <?php echo esc_html($floor); ?>, and purges old news.</td>
             <td><?php echo esc_html(get_option('wpbbs_last_daily', 'never')); ?></td>
             <td><?php echo esc_html($next); ?></td>
             <td><?php echo WPBBS_Admin::form_open('run_maintenance'); ?><button class="button">Run now</button></form></td>
         </tr>
     </tbody>
 </table>
-<p class="description" style="max-width:860px">Each player is also topped up and given the day's spins the first time they visit on a
-    new day, so play works even if cron is late. Running the job twice in a day does no harm: nobody is topped up twice.</p>
+<p class="description" style="max-width:860px">Times are in the site's timezone, <strong><?php echo esc_html($tz); ?></strong>
+    (Settings &rarr; General), where it is now <?php echo esc_html(current_time('Y-m-d H:i')); ?>. The game's day starts at midnight
+    there, and the job moves with it if the timezone is changed. Each player is also given the day's spins and topped up the first time
+    they visit on a new day, so play works even if cron is late. Running the job twice in a day does no harm: nobody gets a second day's
+    spins or top-up.</p>
 
 <div class="wpbbs-box">
     <h2>Set up a real cron job</h2>

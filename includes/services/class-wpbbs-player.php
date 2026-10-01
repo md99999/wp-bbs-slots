@@ -46,37 +46,47 @@ class WPBBS_Player {
     }
 
     /**
-     * The first visit of a day hands out the day's spins and the daily top-up.
-     *
-     * Spins: turns_per_day for each day since the player last received spins, up to
-     * max_catchup_days, so a player who misses a few days can catch up (10 a day for up to
-     * 7 days is 70 spins). Spins left over from a day the player did visit do not carry over.
-     *
-     * Top-up: a bankroll under the daily floor (10,000 by default) is raised to it. The daily
-     * cron job does the same for everyone at midnight; whichever comes first wins, once a day.
+     * A new day hands out the day's spins and the daily top-up. The daily cron job does both for
+     * every player at the site's midnight; a player's first visit of the day does the same for them,
+     * in case cron is late. Whichever comes first wins, once a day.
      */
     private static function new_day($p) {
-        global $wpdb;
         $today = WPBBS_Game::today();
         if ($p->spins_date !== $today) {
-            $days = 1;
-            if ($p->spins_date) {
-                $from = date_create_immutable($p->spins_date, wp_timezone());
-                $to = date_create_immutable($today, wp_timezone());
-                if ($from && $to) $days = max(1, (int) $from->diff($to)->days);
-            }
-            $days = min($days, WPBBS_Settings::get('max_catchup_days'));
-            $spins = WPBBS_Settings::get('turns_per_day') * $days;
-            $wpdb->query($wpdb->prepare(
-                'UPDATE ' . WPBBS_DB::t('players') . ' SET spins_left = %d, spins_date = %s, today_spins = 0, today_won = 0
-                 WHERE id = %d AND (spins_date IS NULL OR spins_date <> %s)',
-                $spins, $today, $p->id, $today
-            ));
+            self::grant_spins($p->id);
         }
         if ($p->topup_date !== $today) {
             self::topup($p->id);
         }
         return ($p->spins_date !== $today || $p->topup_date !== $today) ? self::fresh($p->id) : $p;
+    }
+
+    /**
+     * Hands out the day's spins, once a day (site timezone). With $player_id 0 it covers every
+     * player (the cron job). Returns how many players received spins.
+     *
+     * A player who came by on the day they last received spins starts afresh with turns_per_day:
+     * unused spins do not carry over. A player who missed whole days keeps what they had and gains
+     * turns_per_day for each missed day, up to max_catchup_days' worth (10 a day for 7 days is 70).
+     * "Came by" means any visit to a game page that day, whether or not they spun.
+     */
+    public static function grant_spins($player_id = 0) {
+        global $wpdb;
+        $today = WPBBS_Game::today();
+        $turns = WPBBS_Settings::get('turns_per_day');
+        $cap = $turns * WPBBS_Settings::get('max_catchup_days');
+        $where = $player_id ? $wpdb->prepare(' AND id = %d', $player_id) : '';
+        // Days since the last grant; a player who never had one counts as one day.
+        $days = 'GREATEST(COALESCE(DATEDIFF(%s, spins_date), 1), 1)';
+        return (int) $wpdb->query($wpdb->prepare(
+            'UPDATE ' . WPBBS_DB::t('players') . " SET
+                spins_left = IF(spins_date IS NOT NULL AND last_seen IS NOT NULL AND DATE(last_seen) >= spins_date,
+                                LEAST(%d * $days, %d),
+                                LEAST(spins_left + %d * $days, %d)),
+                spins_date = %s, today_spins = 0, today_won = 0
+             WHERE (spins_date IS NULL OR spins_date <> %s)" . $where,
+            $turns, $today, $cap, $turns, $today, $cap, $today, $today
+        ));
     }
 
     /**

@@ -5,7 +5,7 @@ Plugin URI: https://github.com/md99999/wp-bbs-slots
 Author: Bill Mantz
 Author URI: https://maddogproductions.online/
 Description: WP BBS Slots: a turn-based progressive slot machine game for WordPress, in the spirit of the old BBS door games. A few spins a day, a bankroll that carries over, a progressive jackpot, a Gazette and a Hall of Fame. Credits have no cash value and are a game score only.
-Version: 1.1.2
+Version: 1.1.3
 Requires PHP: 8.0
 Requires at least: 7.0
 Text Domain: wp-bbs-slots
@@ -35,7 +35,7 @@ define('WPBBS_GAME_NAME', 'WP BBS Slots');
 define('WPBBS_GAZETTE_NAME', 'The WP BBS Slots Gazette');
 define('WPBBS_SOURCE_URL', 'https://github.com/md99999/wp-bbs-slots');
 define('WPBBS_SITE_NAME', 'maddogproductions.online');
-define('WPBBS_VERSION', '1.1.2');
+define('WPBBS_VERSION', '1.1.3');
 define('WPBBS_DB_VERSION', '1');
 define('WPBBS_FILE', __FILE__);
 define('WPBBS_PATH', plugin_dir_path(__FILE__));
@@ -61,7 +61,10 @@ add_action('wp_ajax_wpbbs_spin', ['WPBBS_Actions', 'ajax_spin']);
 add_action('wp_ajax_wpbbs_jackpot', ['WPBBS_Actions', 'ajax_jackpot']);
 add_action('wp_ajax_nopriv_wpbbs_jackpot', ['WPBBS_Actions', 'ajax_jackpot']);
 add_action('wp_enqueue_scripts', ['WPBBS_UI', 'enqueue_assets']);
-add_action(WPBBS_Maintenance::DAILY_HOOK, ['WPBBS_Maintenance', 'daily']);
+add_action(WPBBS_Maintenance::DAILY_HOOK, ['WPBBS_Maintenance', 'cron']);
+// The day turns over at midnight in the site's timezone (Settings -> General); follow it when it changes.
+add_action('update_option_timezone_string', ['WPBBS_Maintenance', 'reschedule']);
+add_action('update_option_gmt_offset', ['WPBBS_Maintenance', 'reschedule']);
 
 if (is_admin()) {
     require_once WPBBS_PATH . 'admin/class-wpbbs-admin.php';

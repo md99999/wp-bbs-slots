@@ -1,7 +1,8 @@
 # Maintenance script
 
-`daily_maintenance.php` runs the game's daily job from a real (system) cron job: every bankroll
-under the daily floor (10,000 by default) is topped up to it, and old Gazette news is purged.
+`daily_maintenance.php` runs the game's daily job from a real (system) cron job: every player is
+given the day's spins, every bankroll under the daily floor (10,000 by default) is topped up to it,
+and old Gazette news is purged. The day follows the timezone set in Settings → General.
 
 It finds and loads WordPress by itself, so it can be run from any directory, once a day at your
 site's midnight:
