@@ -1,0 +1,210 @@
+/*
+ * WP BBS Slots: a BBS-terminal flavoured skin, scoped to .wpbbs-game so it doesn't disturb the theme.
+ *
+ * Colour and font rules repeat the wrapper class (.wpbbs-game.wpbbs-game) to outrank theme rules
+ * such as Twenty Twenty-Five's ".wp-block-post-content p".
+ */
+.wpbbs-game {
+  --wpbbs-bg: #07060d;
+  --wpbbs-panel: #120f20;
+  --wpbbs-border: #3a2c5c;
+  --wpbbs-text: #ece8f6;
+  --wpbbs-dim: #b3aac8;
+  --wpbbs-cyan: #7ffbff;
+  --wpbbs-gold: #ffd84d;
+  --wpbbs-green: #7dff7d;
+  --wpbbs-magenta: #ff8bff;
+  --wpbbs-red: #ff6b6b;
+  --wpbbs-ink: #07060d;
+  --wpbbs-field: #1b1630;
+  --wpbbs-field-border: #8f7fd0;
+  --wpbbs-font: ui-monospace, "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --wpbbs-emoji: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+
+  background: var(--wpbbs-bg);
+  color: var(--wpbbs-text);
+  font-family: var(--wpbbs-font);
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 16px;
+  border: 1px solid var(--wpbbs-border);
+  border-radius: 6px;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.wpbbs-game *, .wpbbs-game *::before, .wpbbs-game *::after { box-sizing: border-box; }
+.wpbbs-game.wpbbs-compact { padding: 10px; font-size: 14px; }
+.wpbbs-game.wpbbs-compact .wpbbs-panel { margin-bottom: 0; }
+
+.wpbbs-game.wpbbs-game p, .wpbbs-game.wpbbs-game li, .wpbbs-game.wpbbs-game td, .wpbbs-game.wpbbs-game th,
+.wpbbs-game.wpbbs-game label, .wpbbs-game.wpbbs-game summary, .wpbbs-game.wpbbs-game strong, .wpbbs-game.wpbbs-game em {
+  color: var(--wpbbs-text);
+  font-family: var(--wpbbs-font);
+}
+.wpbbs-game.wpbbs-game h1, .wpbbs-game.wpbbs-game h2, .wpbbs-game.wpbbs-game h3, .wpbbs-game.wpbbs-game h4 {
+  font-family: var(--wpbbs-font); color: var(--wpbbs-cyan); margin: 0 0 .6em; line-height: 1.25;
+}
+.wpbbs-game.wpbbs-game h2 { font-size: 1.3em; }
+.wpbbs-game.wpbbs-game h3 { font-size: 1.05em; color: var(--wpbbs-gold); }
+.wpbbs-game.wpbbs-game h4 { font-size: .95em; color: var(--wpbbs-gold); margin-top: .8em; }
+.wpbbs-game.wpbbs-game p { margin: 0 0 .8em; }
+.wpbbs-game.wpbbs-game a { color: var(--wpbbs-cyan); }
+.wpbbs-game.wpbbs-game a:hover, .wpbbs-game.wpbbs-game a:focus { color: var(--wpbbs-gold); }
+.wpbbs-game.wpbbs-game kbd { font-family: var(--wpbbs-font); border: 1px solid var(--wpbbs-border); border-radius: 3px; padding: 0 .35em; background: var(--wpbbs-field); color: var(--wpbbs-gold); }
+
+.wpbbs-game.wpbbs-game .wpbbs-dim { color: var(--wpbbs-dim); }
+.wpbbs-game.wpbbs-game .wpbbs-gold { color: var(--wpbbs-gold); }
+.wpbbs-game.wpbbs-game .wpbbs-label { color: var(--wpbbs-dim); }
+.wpbbs-small { font-size: .85em; }
+.wpbbs-nowrap { white-space: nowrap; }
+
+.wpbbs-title { color: var(--wpbbs-magenta); font-weight: bold; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+
+.wpbbs-status { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 8px 12px; background: var(--wpbbs-panel); border: 1px solid var(--wpbbs-border); border-radius: 4px; margin-bottom: 8px; font-size: .9em; }
+.wpbbs-stat { white-space: nowrap; }
+
+.wpbbs-nav { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
+.wpbbs-game.wpbbs-game .wpbbs-nav a { padding: 5px 11px; border: 1px solid var(--wpbbs-border); border-radius: 3px; text-decoration: none; color: var(--wpbbs-text); background: var(--wpbbs-panel); }
+.wpbbs-game.wpbbs-game .wpbbs-nav a:hover { border-color: var(--wpbbs-cyan); color: var(--wpbbs-cyan); }
+.wpbbs-game.wpbbs-game .wpbbs-nav a.wpbbs-active { background: var(--wpbbs-cyan); color: var(--wpbbs-ink); border-color: var(--wpbbs-cyan); }
+
+.wpbbs-panel { background: var(--wpbbs-panel); border: 1px solid var(--wpbbs-border); border-radius: 4px; padding: 14px 16px; margin-bottom: 14px; }
+.wpbbs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px; }
+.wpbbs-grid > .wpbbs-panel { margin-bottom: 0; }
+.wpbbs-panel ul, .wpbbs-panel ol { margin: 0 0 .8em 1.2em; padding: 0; }
+.wpbbs-panel li { margin-bottom: .35em; }
+
+.wpbbs-flash { padding: 10px 14px; border-left: 4px solid; margin-bottom: 10px; background: var(--wpbbs-panel); }
+.wpbbs-game.wpbbs-game .wpbbs-flash-success { border-color: var(--wpbbs-green); color: var(--wpbbs-green); }
+.wpbbs-game.wpbbs-game .wpbbs-flash-info { border-color: var(--wpbbs-cyan); color: var(--wpbbs-cyan); }
+.wpbbs-game.wpbbs-game .wpbbs-flash-warning { border-color: var(--wpbbs-gold); color: var(--wpbbs-gold); }
+.wpbbs-game.wpbbs-game .wpbbs-flash-error { border-color: var(--wpbbs-red); color: var(--wpbbs-red); }
+
+/* Buttons */
+.wpbbs-game.wpbbs-game .wpbbs-btn {
+  display: inline-block; font-family: var(--wpbbs-font); font-size: .95em; line-height: 1.2;
+  padding: 8px 14px; border-radius: 3px; border: 1px solid var(--wpbbs-cyan);
+  background: var(--wpbbs-cyan); color: var(--wpbbs-ink); cursor: pointer; text-decoration: none; margin: 2px 0;
+}
+.wpbbs-game.wpbbs-game a.wpbbs-btn, .wpbbs-game.wpbbs-game a.wpbbs-btn:visited { color: var(--wpbbs-ink); text-decoration: none; }
+.wpbbs-game.wpbbs-game .wpbbs-btn:hover, .wpbbs-game.wpbbs-game .wpbbs-btn:focus,
+.wpbbs-game.wpbbs-game a.wpbbs-btn:hover, .wpbbs-game.wpbbs-game a.wpbbs-btn:focus { background: var(--wpbbs-gold); border-color: var(--wpbbs-gold); color: var(--wpbbs-ink); }
+.wpbbs-game.wpbbs-game .wpbbs-btn-alt, .wpbbs-game.wpbbs-game a.wpbbs-btn-alt, .wpbbs-game.wpbbs-game a.wpbbs-btn-alt:visited { background: transparent; color: var(--wpbbs-cyan); }
+.wpbbs-game.wpbbs-game .wpbbs-btn-alt:hover, .wpbbs-game.wpbbs-game a.wpbbs-btn-alt:hover { background: var(--wpbbs-gold); color: var(--wpbbs-ink); }
+.wpbbs-game.wpbbs-game .wpbbs-btn-big { font-size: 1.15em; padding: 10px 22px; }
+.wpbbs-game.wpbbs-game .wpbbs-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.wpbbs-game .wpbbs-btn:focus-visible, .wpbbs-game a:focus-visible, .wpbbs-game input:focus-visible, .wpbbs-game select:focus-visible { outline: 2px solid var(--wpbbs-gold); outline-offset: 2px; }
+
+/* Fields */
+.wpbbs-game.wpbbs-game input[type=text], .wpbbs-game.wpbbs-game select {
+  font-family: var(--wpbbs-font); font-size: 1em; background: var(--wpbbs-field); color: var(--wpbbs-gold);
+  border: 1px solid var(--wpbbs-field-border); border-radius: 3px; padding: 6px 8px; max-width: 100%; min-height: 38px;
+}
+.wpbbs-game.wpbbs-game input[type=text]:focus, .wpbbs-game.wpbbs-game select:focus { border-color: var(--wpbbs-cyan); box-shadow: 0 0 0 2px rgba(127, 251, 255, .35); }
+.wpbbs-game.wpbbs-game option { background: var(--wpbbs-bg); color: var(--wpbbs-gold); }
+.wpbbs-game.wpbbs-game option:disabled { color: #6f6688; }
+.wpbbs-stack { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.wpbbs-stack label { display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 420px; }
+.wpbbs-stack input { width: 100%; }
+
+/* Tables */
+.wpbbs-table-wrap { overflow-x: auto; }
+.wpbbs-table { width: 100%; border-collapse: collapse; margin-bottom: .8em; font-size: .92em; }
+.wpbbs-game.wpbbs-game .wpbbs-table th, .wpbbs-game.wpbbs-game .wpbbs-table td { border-bottom: 1px solid var(--wpbbs-border); padding: 6px 8px; text-align: left; vertical-align: middle; }
+.wpbbs-game.wpbbs-game .wpbbs-table th { color: var(--wpbbs-dim); font-weight: normal; }
+.wpbbs-game.wpbbs-game .wpbbs-table tr.wpbbs-current td { background: rgba(127, 251, 255, .12); }
+.wpbbs-game.wpbbs-game .wpbbs-table tr.wpbbs-news-jackpot td { color: var(--wpbbs-gold); font-weight: bold; }
+.wpbbs-game.wpbbs-game .wpbbs-paytable tr.wpbbs-pay-jackpot td { color: var(--wpbbs-gold); }
+.wpbbs-paytable .wpbbs-sym { width: 3.2em; height: 2.6em; margin-right: 4px; font-size: .8em; }
+.wpbbs-paytable .wpbbs-sym-label { display: none; }
+
+/* Jackpot */
+.wpbbs-hero, .wpbbs-masthead, .wpbbs-machine { text-align: center; }
+.wpbbs-hero ul, .wpbbs-hero ol { text-align: left; }
+.wpbbs-game.wpbbs-game .wpbbs-jackpot-label { margin: 0; color: var(--wpbbs-magenta); letter-spacing: .2em; text-transform: uppercase; font-size: .85em; }
+.wpbbs-game.wpbbs-game .wpbbs-jackpot {
+  font-size: clamp(2em, 7vw, 3.4em); color: var(--wpbbs-gold); margin: .1em 0 .3em; letter-spacing: .04em;
+  text-shadow: 0 0 12px rgba(255, 216, 77, .45);
+}
+.wpbbs-game.wpbbs-game .wpbbs-jackpot-small { font-size: 1.8em; color: var(--wpbbs-gold); margin: 0 0 .4em; font-weight: bold; }
+
+/* The machine */
+.wpbbs-score { font-size: 1.1em; }
+.wpbbs-game.wpbbs-game .wpbbs-score strong { color: var(--wpbbs-green); font-size: 1.2em; }
+.wpbbs-sep { margin: 0 .5em; color: var(--wpbbs-dim); }
+.wpbbs-reels {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 480px; margin: 14px auto;
+  padding: 12px; background: #000; border: 3px solid var(--wpbbs-gold); border-radius: 10px;
+  box-shadow: inset 0 0 18px rgba(255, 216, 77, .25);
+}
+.wpbbs-reel {
+  height: 128px; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: linear-gradient(#fff, #e9e4d6 45%, #fff); border-radius: 6px; border: 1px solid #555;
+}
+.wpbbs-reel.wpbbs-spinning .wpbbs-sym { filter: blur(2px); animation: wpbbs-roll .14s linear infinite; }
+.wpbbs-reel.wpbbs-stopped { animation: wpbbs-thunk .3s ease-out; }
+.wpbbs-reel.wpbbs-win { box-shadow: 0 0 0 3px var(--wpbbs-green), 0 0 18px var(--wpbbs-green); }
+@keyframes wpbbs-roll { from { transform: translateY(-30%); } to { transform: translateY(30%); } }
+@keyframes wpbbs-thunk { 0% { transform: translateY(-8px); } 60% { transform: translateY(3px); } 100% { transform: none; } }
+
+.wpbbs-sym { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; vertical-align: middle; }
+.wpbbs-sym-icon { font-family: var(--wpbbs-emoji); font-size: 3.2em; }
+.wpbbs-game.wpbbs-game .wpbbs-sym-label { font-family: var(--wpbbs-font); font-size: .75em; color: #333; margin-top: 6px; text-transform: uppercase; letter-spacing: .05em; }
+.wpbbs-sym-bar .wpbbs-sym-icon, .wpbbs-sym-seven .wpbbs-sym-icon, .wpbbs-sym-jackpot .wpbbs-sym-icon { font-family: var(--wpbbs-font); font-weight: bold; }
+.wpbbs-game.wpbbs-game .wpbbs-sym-bar .wpbbs-sym-icon { font-size: 1.8em; background: #111; color: #fff; padding: .15em .35em; border-radius: 4px; letter-spacing: .08em; }
+.wpbbs-game.wpbbs-game .wpbbs-sym-seven .wpbbs-sym-icon { font-size: 3.6em; color: #d0021b; text-shadow: 2px 2px 0 #4a0008; }
+.wpbbs-game.wpbbs-game .wpbbs-sym-jackpot .wpbbs-sym-icon {
+  font-size: 1.05em; color: #7a4b00; background: linear-gradient(#ffe680, #f5b400); padding: .45em .3em;
+  border: 2px solid #7a4b00; border-radius: 4px; letter-spacing: .04em;
+}
+.wpbbs-paytable .wpbbs-sym { background: #fff; border-radius: 4px; display: inline-flex; }
+.wpbbs-paytable .wpbbs-sym-icon { font-size: 1.6em; }
+.wpbbs-game.wpbbs-game .wpbbs-paytable .wpbbs-sym-bar .wpbbs-sym-icon { font-size: .9em; }
+.wpbbs-game.wpbbs-game .wpbbs-paytable .wpbbs-sym-seven .wpbbs-sym-icon { font-size: 1.8em; }
+.wpbbs-game.wpbbs-game .wpbbs-paytable .wpbbs-sym-jackpot .wpbbs-sym-icon { font-size: .55em; padding: .3em .15em; }
+
+.wpbbs-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 8px 0; }
+.wpbbs-game.wpbbs-game .wpbbs-pull {
+  font-size: 1.3em; font-weight: bold; letter-spacing: .1em; text-transform: uppercase; padding: 10px 34px;
+  background: var(--wpbbs-red); border-color: var(--wpbbs-red); color: #fff; border-radius: 30px;
+  box-shadow: 0 4px 0 #8a1d1d;
+}
+.wpbbs-game.wpbbs-game .wpbbs-pull:hover, .wpbbs-game.wpbbs-game .wpbbs-pull:focus { background: var(--wpbbs-gold); border-color: var(--wpbbs-gold); color: var(--wpbbs-ink); }
+.wpbbs-game.wpbbs-game .wpbbs-pull:active { transform: translateY(3px); box-shadow: 0 1px 0 #8a1d1d; }
+.wpbbs-keys { margin-top: 0; }
+.wpbbs-game.wpbbs-game .wpbbs-result { min-height: 1.6em; font-size: 1.2em; font-weight: bold; color: var(--wpbbs-text); margin: 10px 0 4px; }
+.wpbbs-game.wpbbs-game .wpbbs-result-win { color: var(--wpbbs-green); }
+.wpbbs-game.wpbbs-game .wpbbs-result-free { color: var(--wpbbs-cyan); }
+.wpbbs-game.wpbbs-game .wpbbs-result-error { color: var(--wpbbs-red); }
+.wpbbs-game.wpbbs-game .wpbbs-result-jackpot { color: var(--wpbbs-gold); font-size: 1.6em; animation: wpbbs-flash 1s steps(2) 6; }
+@keyframes wpbbs-flash { 50% { color: var(--wpbbs-magenta); } }
+.wpbbs-game.wpbbs-game .wpbbs-extra p { color: var(--wpbbs-gold); margin: .3em 0; }
+
+.wpbbs-game.wpbbs-game .wpbbs-help summary { cursor: pointer; color: var(--wpbbs-gold); }
+.wpbbs-help[open] summary { margin-bottom: 10px; }
+
+/* Widgets */
+.wpbbs-toplist { margin: 0 0 .8em 1.4em; padding: 0; }
+.wpbbs-toplist li { padding: 2px 0; border-bottom: 1px dashed var(--wpbbs-border); }
+.wpbbs-records { list-style: none; margin: 0 0 .6em; padding: 0; }
+.wpbbs-records li { padding: 4px 0; border-bottom: 1px dashed var(--wpbbs-border); }
+
+.wpbbs-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin-top: 14px; padding: 8px 12px;
+  background: var(--wpbbs-panel); border: 1px solid var(--wpbbs-border); border-radius: 4px; font-size: .82em; color: var(--wpbbs-dim); }
+.wpbbs-game.wpbbs-game .wpbbs-footer a { color: var(--wpbbs-cyan); text-decoration: none; }
+.wpbbs-game.wpbbs-game .wpbbs-footer a:hover { color: var(--wpbbs-gold); text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wpbbs-reel.wpbbs-spinning .wpbbs-sym, .wpbbs-reel.wpbbs-stopped, .wpbbs-game.wpbbs-game .wpbbs-result-jackpot { animation: none; }
+}
+
+@media (max-width: 600px) {
+  .wpbbs-game { padding: 10px; font-size: 14px; border-radius: 0; }
+  .wpbbs-reel { height: 96px; }
+  .wpbbs-sym-icon { font-size: 2.4em; }
+  .wpbbs-game.wpbbs-game .wpbbs-sym-jackpot .wpbbs-sym-icon { font-size: .75em; }
+  .wpbbs-game.wpbbs-game .wpbbs-sym-bar .wpbbs-sym-icon { font-size: 1.3em; }
+  .wpbbs-game.wpbbs-game .wpbbs-sym-seven .wpbbs-sym-icon { font-size: 2.6em; }
+  /* 16px stops iOS zooming in on focus; 44px is a comfortable tap target. */
+  .wpbbs-game.wpbbs-game input[type=text], .wpbbs-game.wpbbs-game select { font-size: 16px; min-height: 44px; }
+}
