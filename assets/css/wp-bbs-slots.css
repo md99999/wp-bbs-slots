@@ -126,6 +126,9 @@
   font-size: clamp(2em, 7vw, 3.4em); color: var(--wpbbs-gold); margin: .1em 0 .3em; letter-spacing: .04em;
   text-shadow: 0 0 12px rgba(255, 216, 77, .45);
 }
+/* The Play page's progressive, boxed so it stands apart from the score below it. */
+.wpbbs-jackpot-box { display: inline-block; max-width: 100%; border: 2px solid var(--wpbbs-gold); border-radius: 6px; padding: 8px 24px 2px; margin-bottom: 12px; }
+.wpbbs-game.wpbbs-game .wpbbs-jackpot-box .wpbbs-jackpot { margin-bottom: .15em; }
 .wpbbs-game.wpbbs-game .wpbbs-jackpot-small { font-size: 1.8em; color: var(--wpbbs-gold); margin: 0 0 .4em; font-weight: bold; }
 
 /* The machine */

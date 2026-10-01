@@ -29,8 +29,10 @@ if (!$can_spin) {
 }
 ?>
 <div class="wpbbs-panel wpbbs-machine" data-wpbbs-machine>
-    <p class="wpbbs-jackpot-label">Progressive Jackpot</p>
-    <h1 class="wpbbs-jackpot" data-wpbbs="jackpot"><?php echo esc_html(WPBBS_Game::fmt(WPBBS_Game::jackpot())); ?></h1>
+    <div class="wpbbs-jackpot-box">
+        <p class="wpbbs-jackpot-label">Progressive Jackpot</p>
+        <h1 class="wpbbs-jackpot" data-wpbbs="jackpot"><?php echo esc_html(WPBBS_Game::fmt(WPBBS_Game::jackpot())); ?></h1>
+    </div>
 
     <p class="wpbbs-score">
         <span class="wpbbs-label">Your score</span>
