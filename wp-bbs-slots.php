@@ -5,7 +5,7 @@ Plugin URI: https://github.com/md99999/wp-bbs-slots
 Author: Bill Mantz
 Author URI: https://maddogproductions.online/
 Description: WP BBS Slots: a turn-based progressive slot machine game for WordPress, in the spirit of the old BBS door games. A few spins a day, a bankroll that carries over, a progressive jackpot, a Gazette and a Hall of Fame. Credits have no cash value and are a game score only.
-Version: 1.1.6
+Version: 1.2.0
 Requires PHP: 8.0
 Requires at least: 7.0
 Text Domain: wp-bbs-slots
@@ -35,7 +35,7 @@ define('WPBBS_GAME_NAME', 'WP BBS Slots');
 define('WPBBS_GAZETTE_NAME', 'The WP BBS Slots Gazette');
 define('WPBBS_SOURCE_URL', 'https://github.com/md99999/wp-bbs-slots');
 define('WPBBS_SITE_NAME', 'maddogproductions.online');
-define('WPBBS_VERSION', '1.1.6');
+define('WPBBS_VERSION', '1.2.0');
 define('WPBBS_DB_VERSION', '1');
 define('WPBBS_FILE', __FILE__);
 define('WPBBS_PATH', plugin_dir_path(__FILE__));
@@ -43,6 +43,7 @@ define('WPBBS_URL', plugin_dir_url(__FILE__));
 
 require_once WPBBS_PATH . 'includes/class-wpbbs-core.php';
 require_once WPBBS_PATH . 'includes/class-wpbbs-installer.php';
+require_once WPBBS_PATH . 'includes/class-wpbbs-health.php';
 require_once WPBBS_PATH . 'includes/services/class-wpbbs-player.php';
 require_once WPBBS_PATH . 'includes/services/class-wpbbs-records.php';
 require_once WPBBS_PATH . 'includes/services/class-wpbbs-slots.php';

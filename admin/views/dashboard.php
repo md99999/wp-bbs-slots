@@ -15,6 +15,24 @@ $locations = get_registered_nav_menus();
     <div class="wpbbs-card">Jackpots won<strong><?php echo esc_html(WPBBS_Game::fmt($jackpots)); ?></strong></div>
 </div>
 
+<?php $wpbbs_issues = WPBBS_Health::issues(); ?>
+<div class="wpbbs-box"<?php echo $wpbbs_issues ? ' style="border-left:4px solid #d63638"' : ''; ?>>
+    <h2>Install health</h2>
+    <p class="description">How this copy of the plugin was installed, and whether that will cause trouble later.
+        Installed from <code><?php echo esc_html(WPBBS_Health::folder()); ?></code>.</p>
+    <?php if (!$wpbbs_issues) : ?>
+        <p style="color:#008a20"><strong>Nothing to report.</strong> The plugin is in the folder updates expect, there is only
+            one copy of it, and no repository metadata is sitting in your web root.</p>
+    <?php else : foreach ($wpbbs_issues as $issue) : ?>
+        <h3 style="margin-bottom:4px;color:<?php echo $issue['level'] === 'error' ? '#d63638' : '#996800'; ?>">
+            <?php echo esc_html($issue['title']); ?>
+        </h3>
+        <?php echo $issue['body']; ?>
+    <?php endforeach; endif; ?>
+    <p class="description">Building an installable zip from the repository is covered in the plugin's
+        <code>README.md</code>, under <em>Building a release zip</em>.</p>
+</div>
+
 <div class="wpbbs-box">
     <h2>Game pages</h2>
     <table class="widefat striped">

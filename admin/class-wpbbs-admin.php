@@ -19,6 +19,7 @@ class WPBBS_Admin {
 
     public static function init() {
         add_action('admin_menu', [__CLASS__, 'menu']);
+        add_action('admin_notices', ['WPBBS_Health', 'notice']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'assets']);
         foreach (self::POST_ACTIONS as $action) {
             add_action('admin_post_wpbbs_' . $action, function () use ($action) {

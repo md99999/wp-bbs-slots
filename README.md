@@ -155,6 +155,46 @@ the handle on average.
 5. **Set up cron** so the daily top-up happens at midnight. See below.
 6. **Optional: tune the game** under **WP BBS Slots → Settings**.
 
+### Installing from the repository
+
+Install from a release zip (or one you build, below) where you can. Two things go wrong when a
+copy of the repository is uploaded instead:
+
+**The folder name.** WordPress identifies a plugin by its folder. GitHub's **Download ZIP** names
+the folder after the branch (`wp-bbs-slots-main`), so installing a proper zip later adds a *second*
+copy of the plugin rather than updating this one. Rename the folder to `wp-bbs-slots` before you
+activate it, and keep that name.
+
+**Files a web server should not serve.** A clone carries `.git`, the project's entire history; on
+many servers anyone who knows the path can read it. The plugin ships an `.htaccess` that refuses
+`.git`, `*.sql`, `*.md`, logs and editor leftovers, and every directory has an empty `index.php` so
+nothing can be listed. Apache is the only server that reads `.htaccess`; on nginx, add this to the
+server block:
+
+```nginx
+location ~ /wp-content/plugins/.*/\.(git|svn)(/|$) { deny all; }
+location ~ /wp-content/plugins/.*\.(sql|md|log|ya?ml|lock)$ { deny all; }
+```
+
+The plugin also checks itself. **WP BBS Slots → Dashboard** has an **Install health** panel, and an
+administrator sees a notice on the Plugins screen and the game's own screens, if the folder is not
+named `wp-bbs-slots`, if a `.git` directory is present (it asks your site whether it actually serves
+it, and remembers the answer for a day), or if a second copy of the plugin is installed. Each notice
+explains the fix. Game data lives in the database, so renaming the folder or deleting an extra copy
+loses nothing.
+
+### Building a release zip
+
+There is no build step: the plugin is its own source. From a clone, `git archive` produces an
+installable zip containing only the plugin, in a folder named `wp-bbs-slots`:
+
+```bash
+git archive --format=zip --prefix=wp-bbs-slots/ -o wp-bbs-slots-1.2.0.zip HEAD
+```
+
+`.gitattributes` keeps `.gitignore`, `.gitattributes` and `.github` out of it. Upload the zip under
+**Plugins → Add New → Upload Plugin**.
+
 ### Game pages
 
 | Page | Slug | Shortcode |
@@ -290,10 +330,12 @@ is with you.
 
 ```
 wp-bbs-slots.php              plugin bootstrap and hooks
+.htaccess                     refuses .git, the schema and docs on Apache, for installs from a clone
 uninstall.php                 removes the cron job, and the data if "Delete all data" is ticked
 SECURITY.md                   how to report a vulnerability, and how input is handled
 sql/install.sql               database schema (applied with dbDelta and the site's table prefix)
 includes/class-wpbbs-core.php settings, table names, logging, symbols, wagers, ranks
+includes/class-wpbbs-health.php warns if the install came from a clone or a branch-named zip
 includes/services/            players, the machine (spins, payouts, jackpot, bailout),
                               Hall of Fame records, daily maintenance
 includes/frontend/            shortcodes, form and AJAX handlers, UI helpers, page views

@@ -9,6 +9,7 @@
 if (!defined('WP_UNINSTALL_PLUGIN')) exit;
 
 wp_clear_scheduled_hook('wpbbs_daily_maintenance');
+delete_transient('wpbbs_git_reachable');
 
 $settings = get_option('wpbbs_settings', []);
 if (!is_array($settings) || empty($settings['delete_data_on_uninstall'])) return;
