@@ -185,15 +185,74 @@ loses nothing.
 
 ### Building a release zip
 
-There is no build step: the plugin is its own source. From a clone, `git archive` produces an
-installable zip containing only the plugin, in a folder named `wp-bbs-slots`:
+There is no build step: no compiler, no bundler, no dependencies to install. The plugin is its own
+source, and there are three ways to package it.
+
+#### 1. With git (the release build)
+
+From a clone of the repository:
 
 ```bash
-git archive --format=zip --prefix=wp-bbs-slots/ -o wp-bbs-slots-1.2.0.zip HEAD
+git archive --format=zip --prefix=wp-bbs-slots/ -o wp-bbs-slots-1.2.1.zip HEAD
 ```
 
-`.gitattributes` keeps `.gitignore`, `.gitattributes` and `.github` out of it. Upload the zip under
-**Plugins → Add New → Upload Plugin**.
+That gives a zip whose single top-level folder is `wp-bbs-slots`, which is what **Plugins → Add New →
+Upload Plugin** expects. It takes the files from the **last commit**, not the working tree, so
+uncommitted edits are left out, and `.gitattributes` keeps development-only files (`.gitignore`,
+`.gitattributes`, `.github`, `tools/`) out of the archive. On Windows the same command works in Git
+Bash or PowerShell wherever `git` is on the path.
+
+#### 2. With PHP, without git
+
+If git is not installed, or you are on Windows without a `zip` command, `tools/build-zip.php` does the
+same job with nothing but PHP:
+
+```bash
+php tools/build-zip.php
+```
+
+That writes `wp-bbs-slots-<version>.zip` next to the plugin folder, taking the version from the plugin
+header, and prints the path, the file count and the size. Pass a path to put it somewhere else:
+
+```bash
+php tools/build-zip.php /path/to/wp-bbs-slots.zip
+```
+
+It needs PHP's `zip` extension, which is standard on hosting but sometimes switched off in a
+command-line PHP on Windows; the script says so plainly and stops if it is missing. (With the winget
+PHP on Windows, add `-d extension_dir="<php folder>\ext" -d extension=zip` to the command.) It packs the
+**working tree**, uncommitted edits included, which is the difference from `git archive`: useful while
+testing a change, and worth remembering when cutting a release. It skips `.git`, `.github`,
+`.gitignore`, `.gitattributes`, `tools/`, `node_modules`, `vendor`, editor leftovers and any zips or
+logs lying about, so it produces the same file list as the `git archive` command above. The script
+refuses to run over the web, and `tools/` is left out of both builds, so it never reaches a site.
+
+#### 3. Zipping the folder by hand
+
+```bash
+cd .. && zip -r wp-bbs-slots.zip wp-bbs-slots -x '*/.git/*' '*/tools/*' '*/.gitignore' '*/.gitattributes'
+```
+
+#### Checking the zip
+
+Whichever you use, the zip should contain **one top-level folder named `wp-bbs-slots`** with
+`wp-bbs-slots.php` directly inside it, and **no `.git` directory**. To check:
+
+```bash
+unzip -l wp-bbs-slots-1.2.1.zip | head
+```
+
+#### Cutting a release
+
+1. Raise the version in **both** places in `wp-bbs-slots.php`: the `Version:` line in the plugin header
+   and the `WPBBS_VERSION` constant. The header is what WordPress shows; the constant is what the game's
+   footer shows and what busts browser caches for the stylesheet and script.
+2. If the database tables changed, raise `WPBBS_DB_VERSION` as well, so existing sites update their
+   tables on the next page load.
+3. Commit and push.
+4. Build the zip with `git archive` (method 1), so it matches the commit exactly, and check it as above.
+5. Install it on a test site before a live one: **Plugins → Add New → Upload Plugin**, then
+   **Replace current with uploaded**. Game data is in the database and survives the update.
 
 ### Game pages
 
@@ -336,6 +395,7 @@ SECURITY.md                   how to report a vulnerability, and how input is ha
 sql/install.sql               database schema (applied with dbDelta and the site's table prefix)
 includes/class-wpbbs-core.php settings, table names, logging, symbols, wagers, ranks
 includes/class-wpbbs-health.php warns if the install came from a clone or a branch-named zip
+tools/build-zip.php           builds an installable zip with PHP alone (not shipped in releases)
 includes/services/            players, the machine (spins, payouts, jackpot, bailout),
                               Hall of Fame records, daily maintenance
 includes/frontend/            shortcodes, form and AJAX handlers, UI helpers, page views
