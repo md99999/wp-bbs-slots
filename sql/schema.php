@@ -1,3 +1,14 @@
+<?php
+/**
+ * The database schema, applied with dbDelta by WPBBS_Installer::install_schema(), which replaces
+ * {prefix} with the site's table prefix and {charset_collate} with its character set.
+ *
+ * It is a PHP file rather than a .sql one so that no web server will hand it out: loaded directly
+ * it exits before printing anything, on Apache and nginx alike, with or without .htaccess.
+ */
+if (!defined('ABSPATH')) exit;
+
+return <<<'SQL'
 CREATE TABLE {prefix}wpbbs_players (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   user_id bigint(20) unsigned NOT NULL DEFAULT 0,
@@ -83,3 +94,4 @@ CREATE TABLE {prefix}wpbbs_admin_log (
   PRIMARY KEY  (id),
   KEY created_at (created_at)
 ) {charset_collate};
+SQL;

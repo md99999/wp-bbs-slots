@@ -42,11 +42,11 @@ class WPBBS_Installer {
         }
     }
 
-    /** Runs sql/install.sql through dbDelta, substituting the table prefix. */
+    /** Runs the schema in sql/schema.php through dbDelta, substituting the table prefix. */
     public static function install_schema() {
         global $wpdb;
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        $sql = file_get_contents(WPBBS_PATH . 'sql/install.sql');
+        $sql = (string) include WPBBS_PATH . 'sql/schema.php';
         $sql = str_replace(
             ['{prefix}', '{charset_collate}'],
             [$wpdb->prefix, $wpdb->get_charset_collate()],

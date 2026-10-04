@@ -20,7 +20,7 @@ class WPBBS_Health {
      */
     public static function issues() {
         $out = [];
-        foreach ([self::check_duplicates(), self::check_git(), self::check_folder()] as $issue) {
+        foreach ([self::check_duplicates(), self::check_git(), self::check_folder(), self::check_stale_files()] as $issue) {
             if ($issue) $out[] = $issue;
         }
         return $out;
@@ -95,6 +95,30 @@ class WPBBS_Health {
                 . esc_html(self::SLUG) . '</code> and activate it again: deactivate the plugin first, rename the folder'
                 . ' over FTP, SFTP or your host\'s file manager, then activate <strong>' . esc_html(WPBBS_GAME_NAME)
                 . '</strong> on the Plugins screen. Your game data is in the database and is not affected.</p>',
+        ];
+    }
+
+    /**
+     * Files that earlier versions shipped and this one does not. Updating by copying files over the
+     * old folder (FTP, a file manager) leaves them behind, where a server may still serve them.
+     * WordPress's own "Replace current with uploaded" removes them.
+     */
+    private static function check_stale_files() {
+        $stale = [];
+        foreach (['sql/install.sql'] as $file) {
+            if (file_exists(WPBBS_PATH . $file)) $stale[] = $file;
+        }
+        if (!$stale) return null;
+        $list = '<code>' . implode('</code>, <code>', array_map('esc_html', $stale)) . '</code>';
+        return [
+            'level' => 'warning',
+            'title' => 'Files left over from an older version',
+            'body'  => '<p>This copy still contains ' . $list . ', which the current version no longer uses. It was'
+                . ' probably updated by copying the new files over the old folder, which leaves removed files behind.</p>'
+                . '<p>Delete ' . (count($stale) === 1 ? 'it' : 'them') . ' over FTP, SFTP or your host\'s file manager.'
+                . ' Nothing in the game depends on ' . (count($stale) === 1 ? 'it' : 'them') . ', and your game data is in'
+                . ' the database. Next time, update with <em>Plugins &rarr; Add New &rarr; Upload Plugin</em> and'
+                . ' <em>Replace current with uploaded</em>, which clears out old files.</p>',
         ];
     }
 

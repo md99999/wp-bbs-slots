@@ -54,6 +54,13 @@ flawless: it is what to check, and where a mistake would most likely be.
   lists of pages and admin screens, so directory traversal and file inclusion have nothing to act on.
 - **Every folder has an empty `index.php`** and every PHP file exits when loaded directly, so the
   plugin's files cannot be listed or run on their own over the web.
+- **Nothing but PHP, CSS and JavaScript needs protecting by the server.** The database schema is a
+  PHP file (`sql/schema.php`) that exits when loaded directly, so it is never served on Apache or
+  nginx alike; earlier versions shipped it as `sql/install.sql`, which a server that ignores
+  `.htaccess` would hand out. The schema holds no data, passwords or site details (the table prefix
+  is a placeholder) and is public in the repository anyway, but there is no reason to serve it. The
+  Install health panel warns if an old `install.sql` is still on the server. The Markdown files and
+  the license are public documentation.
 - **No shell, `eval()`, `unserialize()` or dynamic code execution** anywhere in the plugin.
 - **Admin functions require `manage_options`** plus their own nonce, and are logged.
 - **Redirects are validated** with `wp_validate_redirect()` and `wp_safe_redirect()`.
