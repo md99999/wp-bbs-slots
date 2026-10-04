@@ -82,9 +82,10 @@ class WPBBS_Slots {
         $bonus = ($won || $result['kind'] === 'free') ? 1 : 0;
         $now = current_time('mysql');
 
-        // MySQL applies these left to right, so best_streak and peak_bankroll see the new values.
+        // MySQL applies these left to right, so best_streak and peak_bankroll see the new values, and
+        // days_played counts the day before today_spins moves off zero.
         $wpdb->query($wpdb->prepare(
-            "UPDATE $t SET bankroll = bankroll + %d, spins_left = spins_left + %d, last_bet = %d,
+            "UPDATE $t SET days_played = days_played + IF(today_spins = 0, 1, 0), bankroll = bankroll + %d, spins_left = spins_left + %d, last_bet = %d,
                 today_spins = today_spins + 1, today_won = today_won + %d,
                 total_spins = total_spins + 1, total_wins = total_wins + %d, total_won = total_won + %d,
                 biggest_win = GREATEST(biggest_win, %d),
@@ -126,7 +127,7 @@ class WPBBS_Slots {
             'spins_left' => (int) $p->spins_left,
             'jackpot'    => WPBBS_Game::jackpot(),
             'next_bet'   => WPBBS_Player::default_bet($p),
-            'rank'       => WPBBS_Game::rank_title((int) $p->bankroll),
+            'rank'       => WPBBS_Game::player_rank($p),
         ];
     }
 
@@ -200,9 +201,29 @@ class WPBBS_Slots {
         }
 
         WPBBS_Records::monthly($p->id, (int) $p->bankroll);
-        foreach (WPBBS_Records::rank_firsts($p, (int) $p->bankroll) as $title) {
+        return array_merge($lines, self::promote($p));
+    }
+
+    /**
+     * Raises the player's rank if their best-ever score or their days played now earn a higher one.
+     * Ranks only ever go up. Returns lines for the player, and reports the promotion in the Gazette.
+     */
+    private static function promote($p) {
+        global $wpdb;
+        $level = WPBBS_Game::rank_for(max((int) $p->peak_bankroll, (int) $p->bankroll), (int) $p->days_played);
+        if ($level <= (int) $p->rank_level) return [];
+        $done = $wpdb->query($wpdb->prepare(
+            'UPDATE ' . WPBBS_DB::t('players') . ' SET rank_level = %d WHERE id = %d AND rank_level < %d', $level, $p->id, $level
+        ));
+        if (!$done) return [];
+        $p->rank_level = $level;
+        $title = WPBBS_Game::rank_title($level);
+        $lines = [sprintf('Promotion! You are now a %s, and that rank is yours to keep.', $title)];
+        if (in_array($title, WPBBS_Records::rank_firsts($p, $level), true)) {
             $lines[] = sprintf('You are the first player to reach the rank of %s!', $title);
-            WPBBS_Log::news('rank', sprintf('%s is the first player to reach the rank of %s.', $name, $title), $p->id);
+            WPBBS_Log::news('rank', sprintf('%s is the first player to reach the rank of %s.', $p->player_name, $title), $p->id);
+        } else {
+            WPBBS_Log::news('promotion', sprintf('%s has risen to the rank of %s.', $p->player_name, $title), $p->id);
         }
         return $lines;
     }

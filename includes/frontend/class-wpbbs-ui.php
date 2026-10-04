@@ -121,7 +121,7 @@ class WPBBS_UI {
     public static function status_bar($p) {
         $items = [
             'Player' => esc_html($p->player_name),
-            'Rank'   => esc_html(WPBBS_Game::rank_title((int) $p->bankroll)),
+            'Rank'   => esc_html(WPBBS_Game::player_rank($p)),
             'Score'  => '<span data-wpbbs="bankroll">' . WPBBS_Game::fmt($p->bankroll) . '</span>',
             'Spins left' => '<span data-wpbbs="spins">' . (int) $p->spins_left . '</span>',
         ];

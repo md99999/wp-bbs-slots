@@ -94,12 +94,12 @@ $leaders = WPBBS_Records::monthly_leaders(12);
         <h3>First to reach each rank</h3>
         <div class="wpbbs-table-wrap">
         <table class="wpbbs-table">
-            <thead><tr><th>Rank</th><th>Bankroll</th><th>First player</th></tr></thead>
+            <thead><tr><th>Rank</th><th>Reached with</th><th>First player</th></tr></thead>
             <tbody>
             <?php foreach ($ranks as $r) : ?>
                 <tr>
                     <td><?php echo esc_html($r['title']); ?></td>
-                    <td class="wpbbs-dim"><?php echo esc_html(WPBBS_Game::fmt($r['threshold'])); ?></td>
+                    <td class="wpbbs-dim"><?php echo esc_html(sprintf('a %s best score or %d days played', WPBBS_Game::fmt($r['score']), $r['days'])); ?></td>
                     <td><?php echo $r['record']
                         ? esc_html($r['record']->player_name) . ' <span class="wpbbs-dim wpbbs-small">' . esc_html(mysql2date(get_option('date_format'), $r['record']->achieved_at)) . '</span>'
                         : '<span class="wpbbs-dim">Nobody yet</span>'; ?></td>
@@ -168,7 +168,7 @@ $leaders = WPBBS_Records::monthly_leaders(12);
                 <tr<?php echo ($p && (int) $p->id === (int) $row->id) ? ' class="wpbbs-current"' : ''; ?>>
                     <td><?php echo (int) $i + 1; ?></td>
                     <td><?php echo esc_html($row->player_name); ?></td>
-                    <td class="wpbbs-dim"><?php echo esc_html(WPBBS_Game::rank_title((int) $row->bankroll)); ?></td>
+                    <td class="wpbbs-dim"><?php echo esc_html(WPBBS_Game::player_rank($row)); ?></td>
                     <td><?php echo esc_html(WPBBS_Game::fmt($row->bankroll)); ?></td>
                     <td><?php echo esc_html(WPBBS_Game::fmt($row->biggest_win)); ?></td>
                     <td><?php echo (int) $row->best_streak; ?></td>

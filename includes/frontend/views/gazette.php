@@ -49,7 +49,7 @@ $today = WPBBS_Player::played_today(50);
 $top = WPBBS_Player::top(20);
 $labels = [
     'new_player' => 'New player', 'jackpot' => 'JACKPOT', 'big_win' => 'Big win', 'record' => 'Record',
-    'rank' => 'Rank', 'bailout' => 'Bailout', 'topup' => 'New day', 'season' => 'New season',
+    'rank' => 'Rank', 'bailout' => 'Bailout', 'topup' => 'New day', 'season' => 'New season', 'promotion' => 'Promotion',
 ];
 ?>
 <div class="wpbbs-panel wpbbs-masthead">
@@ -95,7 +95,7 @@ $labels = [
                     <tr<?php echo ($p && (int) $p->id === (int) $row->id) ? ' class="wpbbs-current"' : ''; ?>>
                         <td><?php echo (int) $i + 1; ?></td>
                         <td><?php echo esc_html($row->player_name); ?></td>
-                        <td class="wpbbs-dim"><?php echo esc_html(WPBBS_Game::rank_title((int) $row->bankroll)); ?></td>
+                        <td class="wpbbs-dim"><?php echo esc_html(WPBBS_Game::player_rank($row)); ?></td>
                         <td><?php echo esc_html(WPBBS_Game::fmt($row->bankroll)); ?></td>
                     </tr>
                 <?php endforeach; ?>

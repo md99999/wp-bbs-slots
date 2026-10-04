@@ -138,24 +138,41 @@ class WPBBS_Game {
     /** The wagers a player may choose. */
     const BETS = [100, 200, 300, 400, 500, 1000, 2500, 5000];
 
-    /** Bankroll thresholds and titles, lowest first. The Hall of Fame records who reached each first. */
+    /**
+     * Ranks, lowest first; the index is the rank's level. A player reaches a rank by either road:
+     * a best-ever score (their highest bankroll) of at least 'score', or at least 'days' days on
+     * which they spun. Ranks are kept for good: a falling score never takes one away, and nor does
+     * a new season. The Hall of Fame records who reached each one first.
+     */
     const RANKS = [
-        0             => 'Newcomer',
-        25000         => 'Regular',
-        100000        => 'High Roller',
-        500000        => 'Card Shark',
-        1000000       => 'Millionaire',
-        10000000      => 'Tycoon',
-        100000000     => 'Mogul',
-        1000000000    => 'BBS Legend',
+        ['title' => 'Newcomer',    'score' => 0,          'days' => 0],
+        ['title' => 'Regular',     'score' => 25000,      'days' => 3],
+        ['title' => 'High Roller', 'score' => 100000,     'days' => 10],
+        ['title' => 'Card Shark',  'score' => 500000,     'days' => 25],
+        ['title' => 'Millionaire', 'score' => 1000000,    'days' => 50],
+        ['title' => 'Tycoon',      'score' => 10000000,   'days' => 100],
+        ['title' => 'Mogul',       'score' => 100000000,  'days' => 200],
+        ['title' => 'BBS Legend',  'score' => 1000000000, 'days' => 365],
     ];
 
-    public static function rank_title($bankroll) {
-        $title = 'Newcomer';
-        foreach (self::RANKS as $threshold => $name) {
-            if ($bankroll >= $threshold) $title = $name;
+    /** The title for a rank level. */
+    public static function rank_title($level) {
+        $level = max(0, min(count(self::RANKS) - 1, (int) $level));
+        return self::RANKS[$level]['title'];
+    }
+
+    /** The highest rank level that a best-ever score or a count of days played earns. */
+    public static function rank_for($best_score, $days_played) {
+        $level = 0;
+        foreach (self::RANKS as $i => $r) {
+            if ($best_score >= $r['score'] || $days_played >= $r['days']) $level = $i;
         }
-        return $title;
+        return $level;
+    }
+
+    /** A player's rank title, from the level they have reached. */
+    public static function player_rank($p) {
+        return self::rank_title($p->rank_level ?? 0);
     }
 
     public static function min_bet() {

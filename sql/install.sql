@@ -18,6 +18,8 @@ CREATE TABLE {prefix}wpbbs_players (
   best_streak int(11) NOT NULL DEFAULT 0,
   jackpots_won int(11) NOT NULL DEFAULT 0,
   peak_bankroll bigint(20) NOT NULL DEFAULT 0,
+  rank_level tinyint(3) unsigned NOT NULL DEFAULT 0,
+  days_played int(11) NOT NULL DEFAULT 0,
   created_at datetime DEFAULT NULL,
   last_played datetime DEFAULT NULL,
   last_seen datetime DEFAULT NULL,

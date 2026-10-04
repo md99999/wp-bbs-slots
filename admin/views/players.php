@@ -10,13 +10,13 @@ $players = $wpdb->get_results('SELECT * FROM ' . WPBBS_DB::t('players') . ' ORDE
     <p>No players have joined yet.</p>
 <?php else : ?>
 <table class="widefat striped">
-    <thead><tr><th>Player</th><th>WP user</th><th>Spins (total / wins)</th><th>Best win</th><th>Last played</th><th>Score / spins left today</th><th></th></tr></thead>
+    <thead><tr><th>Player</th><th>WP user</th><th>Spins (total / wins)</th><th>Best win</th><th>Last played</th><th>Score / spins left today / days played</th><th></th></tr></thead>
     <tbody>
     <?php foreach ($players as $pl) :
         $user = get_userdata($pl->user_id); ?>
         <tr>
             <td><strong><?php echo esc_html($pl->player_name); ?></strong><br>
-                <span class="description">#<?php echo (int) $pl->id; ?> &middot; <?php echo esc_html(WPBBS_Game::rank_title((int) $pl->bankroll)); ?></span></td>
+                <span class="description">#<?php echo (int) $pl->id; ?> &middot; <?php echo esc_html(WPBBS_Game::player_rank($pl)); ?></span></td>
             <td><?php echo $user ? esc_html($user->user_login) : '<em>deleted</em>'; ?></td>
             <td><?php echo esc_html(WPBBS_Game::fmt($pl->total_spins)); ?> / <?php echo esc_html(WPBBS_Game::fmt($pl->total_wins)); ?></td>
             <td><?php echo esc_html(WPBBS_Game::fmt($pl->biggest_win)); ?></td>
@@ -26,6 +26,7 @@ $players = $wpdb->get_results('SELECT * FROM ' . WPBBS_DB::t('players') . ' ORDE
                     <input type="hidden" name="player_id" value="<?php echo (int) $pl->id; ?>">
                     <input type="number" name="bankroll" value="<?php echo (int) $pl->bankroll; ?>" class="small-text" min="0" title="Score (bankroll)" aria-label="Score">
                     <input type="number" name="spins_left" value="<?php echo (int) $pl->spins_left; ?>" class="small-text" min="0" max="1000" title="Spins left today" aria-label="Spins left">
+                    <input type="number" name="days_played" value="<?php echo (int) $pl->days_played; ?>" class="small-text" min="0" title="Days played (counts toward rank)" aria-label="Days played">
                     <button class="button button-small">Save</button>
                 </form>
             </td>

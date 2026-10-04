@@ -17,9 +17,28 @@ class WPBBS_Installer {
     }
 
     public static function maybe_upgrade() {
-        if (get_option('wpbbs_db_version') !== WPBBS_DB_VERSION) {
+        $from = get_option('wpbbs_db_version');
+        if ($from !== WPBBS_DB_VERSION) {
             self::install_schema();
             self::seed_state();
+            if ($from === '1') self::upgrade_ranks();
+        }
+    }
+
+    /**
+     * Version 2 keeps ranks for good, earned by best-ever score or days played. Earlier versions
+     * did not count days, so anyone who has played starts at one day, and everyone gets the rank
+     * their best-ever score has already earned.
+     */
+    private static function upgrade_ranks() {
+        global $wpdb;
+        $t = WPBBS_DB::t('players');
+        $wpdb->query("UPDATE $t SET days_played = 1 WHERE days_played = 0 AND total_spins > 0");
+        foreach ($wpdb->get_results("SELECT id, bankroll, peak_bankroll, days_played, rank_level FROM $t") as $row) {
+            $level = WPBBS_Game::rank_for(max((int) $row->peak_bankroll, (int) $row->bankroll), (int) $row->days_played);
+            if ($level > (int) $row->rank_level) {
+                $wpdb->query($wpdb->prepare("UPDATE $t SET rank_level = %d WHERE id = %d", $level, $row->id));
+            }
         }
     }
 

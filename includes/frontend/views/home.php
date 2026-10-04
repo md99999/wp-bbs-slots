@@ -33,13 +33,23 @@ $s = WPBBS_Settings::all();
                 <?php echo esc_html(WPBBS_Game::fmt($s['jackpot_increment'])); ?> with every spin anyone makes. Three Jackpots win the lot.</li>
             <li><strong>Make the Hall of Fame</strong> with the biggest jackpot, the highest single spin, the most wins in a row,
                 the highest bankroll of the month, or by being the first to reach a rank.</li>
-            <li><strong>Climb the ranks:</strong>
-                <?php
-                $ranks = [];
-                foreach (WPBBS_Game::RANKS as $at => $title) $ranks[] = esc_html($title) . ($at ? ' (' . esc_html(WPBBS_Game::fmt($at)) . ')' : '');
-                echo implode(', ', $ranks);
-                ?>.</li>
+            <li><strong>Climb the ranks.</strong> You rise by your best-ever score <em>or</em> by the number of days you play,
+                whichever gets you there first, and a rank once earned is yours for good: a losing streak never takes it away.</li>
         </ul>
+        <div class="wpbbs-table-wrap">
+        <table class="wpbbs-table">
+            <thead><tr><th>Rank</th><th>Best score</th><th>or days played</th></tr></thead>
+            <tbody>
+            <?php foreach (WPBBS_Game::RANKS as $i => $r) : ?>
+                <tr<?php echo ($p && (int) ($p->rank_level ?? 0) === $i) ? ' class="wpbbs-current"' : ''; ?>>
+                    <td><?php echo esc_html($r['title']); ?></td>
+                    <td><?php echo $i ? esc_html(WPBBS_Game::fmt($r['score'])) : 'where everyone starts'; ?></td>
+                    <td><?php echo $i ? (int) $r['days'] : ''; ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        </div>
     </div>
     <div class="wpbbs-panel">
         <h3>How to play</h3>

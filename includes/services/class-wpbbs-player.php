@@ -207,7 +207,7 @@ class WPBBS_Player {
     public static function top($limit = 20) {
         global $wpdb;
         return $wpdb->get_results($wpdb->prepare(
-            'SELECT id, player_name, bankroll, biggest_win, best_streak, jackpots_won, total_spins, last_played FROM '
+            'SELECT id, player_name, bankroll, rank_level, days_played, biggest_win, best_streak, jackpots_won, total_spins, last_played FROM '
             . WPBBS_DB::t('players') . ' ORDER BY bankroll DESC, id ASC LIMIT %d', max(1, (int) $limit)
         ));
     }

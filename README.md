@@ -107,6 +107,27 @@ Every payout also earns **one bonus spin**, and a free spin gives back the spin 
   bailout of 10,000 credits so the player can finish the day. Only one a day: spend that too, and
   you are done until tomorrow's top-up.
 
+### Ranks
+
+A player rises through the ranks by their **best-ever score** (their highest bankroll) **or** by the
+number of **days they have played** (days on which they spun at least once), whichever gets them
+there first. **A rank once reached is kept for good:** a losing streak, a bailout or a new season
+never takes it away.
+
+| Rank | Best-ever score | or days played |
+|---|---|---|
+| Newcomer | where everyone starts | |
+| Regular | 25,000 | 3 |
+| High Roller | 100,000 | 10 |
+| Card Shark | 500,000 | 25 |
+| Millionaire | 1,000,000 | 50 |
+| Tycoon | 10,000,000 | 100 |
+| Mogul | 100,000,000 | 200 |
+| BBS Legend | 1,000,000,000 | 365 |
+
+A promotion is announced to the player and in the Gazette, and the Hall of Fame records the first
+player to reach each rank. The ladder is `WPBBS_Game::RANKS` in `includes/class-wpbbs-core.php`.
+
 ### The progressive jackpot
 
 The progressive starts at **100,000,000** and every spin by anyone adds **5,000** to it. It is
@@ -299,9 +320,7 @@ A permanent record of:
 - the **highest single spin win**
 - the **most consecutive wins**
 - the **highest monthly bankroll**, all time and for each of the last 12 months
-- the **first player to reach each rank**: Regular (25,000), High Roller (100,000), Card Shark
-  (500,000), Millionaire (1,000,000), Tycoon (10,000,000), Mogul (100,000,000) and BBS Legend
-  (1,000,000,000)
+- the **first player to reach each rank**, from Regular to BBS Legend (see [Ranks](#ranks))
 
 and the top scores.
 
@@ -319,12 +338,13 @@ The **WP BBS Slots** menu in wp-admin (administrators only):
   **DANGER SECTION**, whose resets cannot be undone and each need a box ticked and a word typed:
   - **Reset the progressive jackpot** to its starting value without anyone winning it (type `RESET`).
   - **Reset all scores**, for a new season: every player keeps their name but goes back to the
-    starting bankroll and spins with their stats cleared; the Hall of Fame, jackpot winners, monthly
-    bests and the progressive are kept (type `SCORES`).
+    starting bankroll and spins with their stats cleared; their ranks and days played, the Hall of
+    Fame, jackpot winners, monthly bests and the progressive are kept (type `SCORES`).
   - **Reset the game to new**: every player, score, record, jackpot win, monthly best, news item and
     the admin log are deleted and the progressive is reseeded. Settings, pages and WordPress accounts
     are kept (type `NEW GAME`).
-- **Players:** every player with their score and spins; edit a score or spins left, or **delete a
+- **Players:** every player with their score and spins; edit a score, spins left or days played
+  (an edit can raise a rank but never lower one), or **delete a
   player** who has left the game or asks for their data to be removed. Their row, monthly history and
   news are deleted; Hall of Fame entries they held stay as "A former player".
 - **Maintenance:** run the daily job now, see when it last and next runs, a **daily job log** (one line
@@ -410,7 +430,7 @@ All tables use the site's table prefix (shown as `wp_`).
 
 | Table | Contents |
 |---|---|
-| wp_wpbbs_players | one row per player: WordPress user, player name, bankroll, spins, dates of the last top-up and bailout, last wager, today's play and lifetime stats |
+| wp_wpbbs_players | one row per player: WordPress user, player name, bankroll, spins, dates of the last top-up and bailout, last wager, rank reached and days played, today's play and lifetime stats |
 | wp_wpbbs_state | the progressive jackpot |
 | wp_wpbbs_jackpots | every jackpot won |
 | wp_wpbbs_records | Hall of Fame records: highest spin, longest streak, first to each rank |

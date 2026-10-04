@@ -233,12 +233,19 @@ class WPBBS_Admin {
         $id = (int) self::post('player_id');
         $p = WPBBS_Player::fresh($id);
         if (!$p) throw new WPBBS_Exception('Player not found.');
+        $bankroll = max(0, (int) self::post('bankroll'));
+        $days = max(0, min(100000, (int) self::post('days_played', (string) $p->days_played)));
+        // Ranks only go up: an edit can earn a higher one, never take one away.
+        $level = max((int) $p->rank_level, WPBBS_Game::rank_for(max((int) $p->peak_bankroll, $bankroll), $days));
         $wpdb->update(WPBBS_DB::t('players'), [
-            'bankroll'   => max(0, (int) self::post('bankroll')),
-            'spins_left' => max(0, min(1000, (int) self::post('spins_left'))),
+            'bankroll'    => $bankroll,
+            'spins_left'  => max(0, min(1000, (int) self::post('spins_left'))),
+            'days_played' => $days,
+            'rank_level'  => $level,
         ], ['id' => $id]);
+        if ($level > (int) $p->rank_level) WPBBS_Records::rank_firsts($p, $level);
         WPBBS_Log::admin('player', sprintf('Edited player #%d (%s).', $id, $p->player_name));
-        self::notice('success', sprintf('%s updated.', $p->player_name));
+        self::notice('success', sprintf('%s updated. Rank: %s.', $p->player_name, WPBBS_Game::rank_title($level)));
     }
 
     private static function do_player_delete() {

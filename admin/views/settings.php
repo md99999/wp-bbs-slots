@@ -80,7 +80,7 @@ $fields = [
 
     <h3>Reset all scores (a new season)</h3>
     <p>Every player keeps their player name but goes back to <?php echo esc_html(WPBBS_Game::fmt($s['starting_bankroll'])); ?> credits and
-        <?php echo (int) $s['turns_per_day']; ?> spins, with their wins, streaks and other stats cleared. The Hall of Fame, jackpot winners,
+        <?php echo (int) $s['turns_per_day']; ?> spins, with their wins, streaks and other stats cleared. Their ranks and days played, the Hall of Fame, jackpot winners,
         monthly bests and the progressive are kept, so past seasons stay on record. The Gazette announces the new season.</p>
     <?php echo WPBBS_Admin::form_open('reset_scores'); ?>
         <p><label><input type="checkbox" name="confirm_warning" value="1" required> I understand every player's score will be lost.</label></p>

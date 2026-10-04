@@ -29,17 +29,22 @@ class WPBBS_Records {
         ));
     }
 
-    /** Records the first player to reach each rank at or below $bankroll; returns the titles newly claimed. */
-    public static function rank_firsts($player, $bankroll) {
+    /** The record key for being first to a rank. (Keyed by the rank's score, as earlier versions were.) */
+    private static function rank_key($level) {
+        return 'rank_' . WPBBS_Game::RANKS[$level]['score'];
+    }
+
+    /** Records the first player to reach each rank up to $level; returns the titles newly claimed. */
+    public static function rank_firsts($player, $level) {
         global $wpdb;
         $claimed = [];
-        foreach (WPBBS_Game::RANKS as $threshold => $title) {
-            if ($threshold <= 0 || $bankroll < $threshold) continue;
+        foreach (WPBBS_Game::RANKS as $i => $r) {
+            if ($i <= 0 || $i > $level) continue;
             $done = $wpdb->query($wpdb->prepare(
                 'INSERT IGNORE INTO ' . WPBBS_DB::t('records') . ' (record_key, player_id, player_name, record_value, detail, achieved_at) VALUES (%s, %d, %s, %d, %s, %s)',
-                'rank_' . $threshold, $player->id, $player->player_name, $bankroll, $title, current_time('mysql')
+                self::rank_key($i), $player->id, $player->player_name, $i, $r['title'], current_time('mysql')
             ));
-            if ($done) $claimed[] = $title;
+            if ($done) $claimed[] = $r['title'];
         }
         return $claimed;
     }
@@ -72,9 +77,9 @@ class WPBBS_Records {
         $by_key = [];
         foreach ($rows as $row) $by_key[$row->record_key] = $row;
         $out = [];
-        foreach (WPBBS_Game::RANKS as $threshold => $title) {
-            if ($threshold <= 0) continue;
-            $out[] = ['title' => $title, 'threshold' => $threshold, 'record' => $by_key['rank_' . $threshold] ?? null];
+        foreach (WPBBS_Game::RANKS as $i => $r) {
+            if ($i <= 0) continue;
+            $out[] = ['title' => $r['title'], 'score' => $r['score'], 'days' => $r['days'], 'record' => $by_key[self::rank_key($i)] ?? null];
         }
         return $out;
     }
