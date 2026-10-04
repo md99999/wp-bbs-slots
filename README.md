@@ -92,9 +92,10 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 | Bell Bell Bell | 50x |
 | Cherry Cherry Cherry | 25x |
 | Any pair on the first two reels | 2x |
-| A Cherry anywhere, with no other win | a free spin |
+| A Cherry anywhere, with no other win | a Bonus Spin |
 
-Every payout also earns **one bonus spin**, and a free spin gives back the spin just used.
+Every payout also earns **one Bonus Spin**, and so does a Cherry. A Bonus Spin gives back the spin
+just used; the wager is not returned.
 
 ### Daily play
 

@@ -71,7 +71,7 @@ $s = WPBBS_Settings::all();
             <li>You get <strong><?php echo (int) $s['turns_per_day']; ?> spins a day</strong>. Unused spins do not carry over to the next day,
                 but if you miss whole days you can catch up: you receive each missed day's spins, up to
                 <?php echo (int) $s['max_catchup_days']; ?> days' worth (<?php echo (int) ($s['turns_per_day'] * $s['max_catchup_days']); ?> spins).</li>
-            <li>Every win earns a bonus spin, and a Cherry gives you a free spin.</li>
+            <li>Every win earns a Bonus Spin, and so does a Cherry: you get the spin back, though not the wager.</li>
             <li>Your bankroll carries over permanently. Each new day, anyone with less than
                 <?php echo esc_html(WPBBS_Game::fmt($s['daily_floor'])); ?> credits is topped up to <?php echo esc_html(WPBBS_Game::fmt($s['daily_floor'])); ?>.</li>
             <?php if ($s['bailout_amount'] > 0) : ?>

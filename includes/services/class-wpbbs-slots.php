@@ -104,9 +104,9 @@ class WPBBS_Slots {
             if ($result['kind'] === 'jackpot') {
                 $message = sprintf('JACKPOT! You won the progressive jackpot of %s credits!', WPBBS_Game::fmt($win));
             }
-            $message .= ' Bonus spin awarded.';
+            $message .= ' Bonus Spin awarded.';
         } elseif ($result['kind'] === 'free') {
-            $message = 'A Cherry: free spin! You get that spin back.';
+            $message = 'A Cherry: Bonus Spin! You get that spin back.';
         } else {
             $message = 'No win this time. Play again.';
         }
