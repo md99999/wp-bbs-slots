@@ -220,13 +220,13 @@ source, and there are three ways to package it.
 From a clone of the repository:
 
 ```bash
-git archive --format=zip --prefix=wp-bbs-slots/ -o wp-bbs-slots-1.2.1.zip HEAD
+git archive --format=zip --prefix=wp-bbs-slots/ -o wp-bbs-slots-1.3.5.zip HEAD
 ```
 
 That gives a zip whose single top-level folder is `wp-bbs-slots`, which is what **Plugins → Add New →
 Upload Plugin** expects. It takes the files from the **last commit**, not the working tree, so
 uncommitted edits are left out, and `.gitattributes` keeps development-only files (`.gitignore`,
-`.gitattributes`, `.github`, `tools/`) out of the archive. On Windows the same command works in Git
+`.gitattributes`, `.github`, `tools/` and the setup guide) out of the archive. On Windows the same command works in Git
 Bash or PowerShell wherever `git` is on the path.
 
 #### 2. With PHP, without git
@@ -257,16 +257,41 @@ refuses to run over the web, and `tools/` is left out of both builds, so it neve
 #### 3. Zipping the folder by hand
 
 ```bash
-cd .. && zip -r wp-bbs-slots.zip wp-bbs-slots -x '*/.git/*' '*/tools/*' '*/.gitignore' '*/.gitattributes'
+cd .. && zip -r wp-bbs-slots.zip wp-bbs-slots -x '*/.git*' '*/tools/*' '*/docs/SETUP-BBS-ON-WORDPRESS.md' '*.zip' '*.log'
 ```
+
+`'*/.git*'` covers the `.git` and `.github` folders and the `.gitignore` and `.gitattributes` files.
+On Windows, File Explorer's *Send to → Compressed folder* cannot leave anything out, so use one of the
+other methods, or zip a copy of the folder with the items below deleted from it first.
+
+#### What to leave out of the zip
+
+Only the plugin itself belongs in the zip. Leave these out (methods 1 and 2 do it for you):
+
+| Leave out | What it is |
+|---|---|
+| `.git/` | the repository and its whole history; the one that matters most |
+| `.github/` | GitHub settings and workflows |
+| `.gitignore`, `.gitattributes`, and any other `.git*` file (`.gitmodules`, `.gitkeep`) | git configuration |
+| `tools/` | the zip builder, `build-zip.php` |
+| `docs/SETUP-BBS-ON-WORDPRESS.md` | the sysop's site-setup guide; it is about the site, not the plugin |
+| `.vscode/`, `.idea/`, `node_modules/`, `vendor/` | editor settings and dependency folders, if you have any |
+| `*.zip`, `*.log`, `*.swp`, `*.bak`, `.DS_Store`, `Thumbs.db`, `desktop.ini` | earlier builds, logs and editor or system leftovers |
+
+Everything else ships: `wp-bbs-slots.php`, `uninstall.php`, `index.php`, `.htaccess`, `README.md`,
+`SECURITY.md`, `LICENSE`, and the `admin/`, `assets/`, `docs/` (just its `index.php`), `includes/`,
+`maintenance/` and `sql/` folders. If any of the left-out items reach a site anyway, **WP BBS Slots →
+Dashboard → Install health** lists them.
 
 #### Checking the zip
 
 Whichever you use, the zip should contain **one top-level folder named `wp-bbs-slots`** with
-`wp-bbs-slots.php` directly inside it, and **no `.git` directory**. To check:
+`wp-bbs-slots.php` directly inside it, and nothing from the list above. To check, list the zip and
+look for anything that should not be there; the second command should print nothing:
 
 ```bash
-unzip -l wp-bbs-slots-1.2.1.zip | head
+unzip -l wp-bbs-slots-1.3.5.zip
+unzip -l wp-bbs-slots-1.3.5.zip | grep -E '/\.git|/tools/|SETUP-BBS|\.zip$|\.log$'
 ```
 
 #### Cutting a release

@@ -26,6 +26,8 @@ $slug = 'wp-bbs-slots';
 $skip_dirs  = ['.git', '.github', '.idea', '.vscode', 'node_modules', 'vendor', 'tools'];
 $skip_files = ['.gitignore', '.gitattributes', '.DS_Store', 'Thumbs.db', 'desktop.ini'];
 $skip_exts  = ['zip', 'log', 'swp', 'bak', 'orig', 'rej'];
+/** Repository documents that are not part of the plugin, by path from the plugin folder. */
+$skip_paths = ['docs/SETUP-BBS-ON-WORDPRESS.md'];
 
 $version = 'unknown';
 $header = (string) file_get_contents($root . '/' . $slug . '.php');
@@ -50,7 +52,9 @@ $files = new RecursiveIteratorIterator(
     new RecursiveCallbackFilterIterator(
         new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS),
         function ($file) use ($skip_dirs) {
-            return !($file->isDir() && in_array($file->getFilename(), $skip_dirs, true));
+            if (!$file->isDir()) return true;
+            // Any git folder (.git, .github and the like) as well as the named ones.
+            return !in_array($file->getFilename(), $skip_dirs, true) && stripos($file->getFilename(), '.git') !== 0;
         }
     ),
     RecursiveIteratorIterator::LEAVES_ONLY
@@ -60,10 +64,11 @@ $count = 0;
 foreach ($files as $file) {
     if ($file->isDir()) continue;
     $name = $file->getFilename();
-    if (in_array($name, $skip_files, true)) continue;
+    if (in_array($name, $skip_files, true) || stripos($name, '.git') === 0) continue;
     if (in_array(strtolower($file->getExtension()), $skip_exts, true)) continue;
     // Zip entries always use forward slashes, whatever the platform's separator is.
     $relative = str_replace(DIRECTORY_SEPARATOR, '/', substr($file->getPathname(), strlen($root) + 1));
+    if (in_array($relative, $skip_paths, true)) continue;
     $zip->addFile($file->getPathname(), $slug . '/' . $relative);
     $count++;
 }
