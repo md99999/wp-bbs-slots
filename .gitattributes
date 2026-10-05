@@ -11,3 +11,4 @@
 /.gitignore    export-ignore
 /.github       export-ignore
 /tools         export-ignore
+/setup-bbs-on-wordpress.md export-ignore
