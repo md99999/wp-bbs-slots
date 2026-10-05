@@ -203,7 +203,8 @@ location ~ /wp-content/plugins/.*\.(sql|md|log|ya?ml|lock)$ { deny all; }
 The plugin also checks itself. **WP BBS Slots → Dashboard** has an **Install health** panel, and an
 administrator sees a notice on the Plugins screen and the game's own screens, if the folder is not
 named `wp-bbs-slots`, if a `.git` directory is present (it asks your site whether it actually serves
-it, and remembers the answer for a day), if a second copy of the plugin is installed, or if
+it, and remembers the answer for a day), if any other git file or folder came along (`.gitattributes`, `.gitignore`, `.github` and the like,
+anywhere in the plugin), if a second copy of the plugin is installed, or if
 files from an older version (such as `sql/install.sql`) were left behind by copying an update over
 the old folder. Each notice
 explains the fix. Game data lives in the database, so renaming the folder or deleting an extra copy

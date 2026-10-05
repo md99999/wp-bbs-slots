@@ -20,7 +20,7 @@ class WPBBS_Health {
      */
     public static function issues() {
         $out = [];
-        foreach ([self::check_duplicates(), self::check_git(), self::check_folder(), self::check_stale_files()] as $issue) {
+        foreach ([self::check_duplicates(), self::check_git(), self::check_folder(), self::check_stale_files(), self::check_git_files()] as $issue) {
             if ($issue) $out[] = $issue;
         }
         return $out;
@@ -96,6 +96,51 @@ class WPBBS_Health {
                 . ' over FTP, SFTP or your host\'s file manager, then activate <strong>' . esc_html(WPBBS_GAME_NAME)
                 . '</strong> on the Plugins screen. Your game data is in the database and is not affected.</p>',
         ];
+    }
+
+    /**
+     * Any other git file or folder anywhere in the plugin: .gitattributes, .gitignore, .github,
+     * .gitmodules, .gitkeep and the like. None belongs on a web server, and a release zip has none.
+     * (A .git directory itself is reported by check_git(), with its own reachability test.)
+     */
+    private static function check_git_files() {
+        $found = self::git_files();
+        if (!$found) return null;
+        $shown = array_slice($found, 0, 10);
+        $list = '<code>' . implode('</code>, <code>', array_map('esc_html', $shown)) . '</code>'
+            . (count($found) > count($shown) ? sprintf(' and %d more', count($found) - count($shown)) : '');
+        return [
+            'level' => 'warning',
+            'title' => 'Repository files are installed with the plugin',
+            'body'  => '<p>This copy contains ' . $list . '. They belong to the source repository, not to the plugin: a'
+                . ' release zip has none of them. They usually arrive when a copy of the repository, or GitHub\'s'
+                . ' <em>Download ZIP</em>, is uploaded instead of a built zip.</p>'
+                . '<p>They are not dangerous on their own, but they have no business on a web server. Delete them over'
+                . ' FTP, SFTP or your host\'s file manager, or reinstall from a zip built as the README describes, with'
+                . ' <em>Replace current with uploaded</em>. The game does not use them, and your game data is in the database.</p>',
+        ];
+    }
+
+    /** Paths, relative to the plugin folder, of every file or folder whose name starts with ".git", except .git itself. */
+    public static function git_files() {
+        $root = untrailingslashit(WPBBS_PATH);
+        $found = [];
+        $walk = function ($dir, $rel) use (&$walk, &$found) {
+            $entries = @scandir($dir);
+            if (!$entries) return;
+            foreach ($entries as $entry) {
+                if ($entry === '.' || $entry === '..' || $entry === '.git') continue;
+                $path = $dir . '/' . $entry;
+                if (stripos($entry, '.git') === 0) {
+                    $found[] = $rel . $entry . (is_dir($path) ? '/' : '');
+                } elseif (is_dir($path) && !is_link($path)) {
+                    $walk($path, $rel . $entry . '/');
+                }
+            }
+        };
+        $walk($root, '');
+        sort($found);
+        return $found;
     }
 
     /**
