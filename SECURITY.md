@@ -44,7 +44,7 @@ flawless: it is what to check, and where a mistake would most likely be.
   signed-in user. The spin is a POST to `admin-ajax.php` (`wp_ajax_` only, so never for visitors who
   are not signed in), with a plain form POST as the fallback when JavaScript is off.
 - **The server decides every spin** with `random_int()`. The browser only animates the result it is
-  sent, so nothing a player sends can choose the symbols or the payout.
+  sent, so nothing a player sends can choose the symbols or the score.
 - **Posted fields are read through one helper** that discards anything which is not a scalar.
 - **Every SQL statement with a variable in it uses `$wpdb->prepare()`** with placeholders. Values
   are never concatenated into SQL; table names come from a fixed list.

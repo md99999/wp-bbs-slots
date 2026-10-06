@@ -188,6 +188,10 @@
 .wpbbs-game.wpbbs-game .wpbbs-help summary { cursor: pointer; color: var(--wpbbs-gold); }
 .wpbbs-help[open] summary { margin-bottom: 10px; }
 
+/* The no-monetary-value notice at the foot of the home and play pages. */
+.wpbbs-notice { border-color: var(--wpbbs-gold); text-align: center; }
+.wpbbs-game.wpbbs-game .wpbbs-notice p { margin: 0; color: var(--wpbbs-gold); }
+
 /* Widgets */
 .wpbbs-toplist { margin: 0 0 .8em 1.4em; padding: 0; }
 .wpbbs-toplist li { padding: 2px 0; border-bottom: 1px dashed var(--wpbbs-border); }

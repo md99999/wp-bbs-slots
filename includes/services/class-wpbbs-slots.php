@@ -21,7 +21,7 @@ class WPBBS_Slots {
     }
 
     /**
-     * Scores three reels against the pay table.
+     * Scores three reels against the score table.
      * @return array kind (jackpot, triple, pair, free or none), multiple and a description
      */
     public static function evaluate(array $reels) {
@@ -132,7 +132,7 @@ class WPBBS_Slots {
     }
 
     /**
-     * Pays out the progressive and resets it to its starting value. Compare-and-swap, so two
+     * Awards the progressive and resets it to its starting value. Compare-and-swap, so two
      * winners at the same moment cannot both collect the same pot.
      */
     private static function claim_jackpot() {

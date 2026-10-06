@@ -66,6 +66,8 @@ if (!$can_spin) {
 </div>
 
 <details class="wpbbs-panel wpbbs-help">
-    <summary>Pay table</summary>
+    <summary>Score table</summary>
     <?php include WPBBS_PATH . 'includes/frontend/views/_paytable.php'; ?>
 </details>
+
+<?php include WPBBS_PATH . 'includes/frontend/views/_notice.php'; ?>

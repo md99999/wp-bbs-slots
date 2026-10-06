@@ -95,7 +95,7 @@ $s = WPBBS_Settings::all();
 </div>
 
 <div class="wpbbs-panel">
-    <h3>The reels and the pay table</h3>
+    <h3>The reels and the score table</h3>
     <p>Cherries and Lemons come up often, Bells moderately, BARs less often, Diamonds rarely,
         Sevens very rarely and Jackpots hardly ever.</p>
     <?php include WPBBS_PATH . 'includes/frontend/views/_paytable.php'; ?>
@@ -105,6 +105,6 @@ $s = WPBBS_Settings::all();
     <h3>The news</h3>
     <p>The <a href="<?php echo esc_url(WPBBS_UI::url('gazette')); ?>">Gazette</a> reports who played today, the top scores, big wins and
         where the progressive stands, and the <a href="<?php echo esc_url(WPBBS_UI::url('hof')); ?>">Hall of Fame</a> keeps the records.</p>
-    <p class="wpbbs-small wpbbs-dim">This is a game of chance played for a score. Credits have no cash value: nothing can be bought, won,
-        sold or redeemed for money or prizes.</p>
 </div>
+
+<?php include WPBBS_PATH . 'includes/frontend/views/_notice.php'; ?>

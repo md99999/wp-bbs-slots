@@ -12,6 +12,8 @@ to your WordPress site, choose a player name and play.
 
 > **Credits have no cash value and depict a game score only.** Nothing can be bought, won, sold or
 > redeemed for money or prizes. WP BBS Slots is a score-keeping game, not gambling.
+> The home and Play pages say so at the foot: *This game has no monetary value, Players play
+> against other players for high score points to get on the Hall of Fame page.*
 
 ---
 
@@ -21,7 +23,7 @@ WP BBS Slots takes its inspiration from the mechanical progressive slot machines
 the turn-based "door" games of the BBS era, where you dialled in, played your turns for the day and
 came back tomorrow. It is an **entirely new, independently written game**:
 
-- Its code, text, rules, pay table and artwork are original to this project.
+- Its code, text, rules, score table and artwork are original to this project.
 - It contains no code, text, artwork or sound from any casino game, slot machine, gaming platform or
   other slot machine software.
 - It is **not affiliated with, endorsed by or connected to** any casino, sportsbook, sports
@@ -81,9 +83,9 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 | 7 Lucky Seven | very rarely |
 | JACKPOT | extremely rarely |
 
-### Pay table
+### Score table
 
-| Combination | Payout |
+| Combination | Score |
 |---|---|
 | Jackpot Jackpot Jackpot | the **Progressive Jackpot** |
 | 7 7 7 | 500x the wager |
@@ -94,7 +96,7 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 | Any pair on the first two reels | 2x |
 | A Cherry anywhere, with no other win | a Bonus Spin |
 
-Every payout also earns **one Bonus Spin**, and so does a Cherry. A Bonus Spin gives back the spin
+Every score also earns **one Bonus Spin**, and so does a Cherry. A Bonus Spin gives back the spin
 just used; the wager is not returned.
 
 ### Daily play
@@ -146,7 +148,7 @@ on a few spins.
 ### The odds
 
 The reel weights are in `WPBBS_Game::SYMBOLS` in `includes/class-wpbbs-core.php`. Every reel uses
-the same strip. With the shipped weights the machine pays back about 102% of wagers before bonus
+the same strip. With the shipped weights the machine scores back about 102% of wagers before bonus
 spins and the progressive, about 27% of spins win something, and three Jackpots come up roughly once
 in 29,000 spins. Because wins and Cherries hand spins back, a day's 10 spins make about 30 pulls of
 the handle on average.
@@ -447,7 +449,7 @@ sql/schema.php                database schema (applied with dbDelta and the site
 includes/class-wpbbs-core.php settings, table names, logging, symbols, wagers, ranks
 includes/class-wpbbs-health.php warns if the install came from a clone or a branch-named zip
 tools/build-zip.php           builds an installable zip with PHP alone (not shipped in releases)
-includes/services/            players, the machine (spins, payouts, jackpot, bailout),
+includes/services/            players, the machine (spins, scores, jackpot, bailout),
                               Hall of Fame records, daily maintenance
 includes/frontend/            shortcodes, form and AJAX handlers, UI helpers, page views
 admin/                        wp-admin screens
