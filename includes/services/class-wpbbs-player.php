@@ -198,7 +198,8 @@ class WPBBS_Player {
     /** The wager to preselect: the last one used, lowered if the bankroll no longer covers it. */
     public static function default_bet($p) {
         $last = (int) $p->last_bet;
-        if (!in_array($last, WPBBS_Game::BETS, true)) $last = WPBBS_Game::min_bet();
+        // A wager no longer on the list (2,500 was dropped in 1.3.7) becomes the nearest one below it.
+        if (!in_array($last, WPBBS_Game::BETS, true)) $last = self::max_affordable_bet($last) ?: WPBBS_Game::min_bet();
         if ($last <= (int) $p->bankroll) return $last;
         return self::max_affordable_bet((int) $p->bankroll) ?: WPBBS_Game::min_bet();
     }

@@ -136,7 +136,7 @@ class WPBBS_Game {
     const PAIR_PAYS = 2;
 
     /** The wagers a player may choose. */
-    const BETS = [100, 200, 300, 400, 500, 1000, 2500, 5000];
+    const BETS = [100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000];
 
     /**
      * Ranks, lowest first; the index is the rank's level. A player reaches a rank by either road:
