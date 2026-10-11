@@ -119,12 +119,12 @@ class WPBBS_Game {
      * 'weight' is how many of the reel's stops carry the symbol; every reel uses the same strip.
      * 'pays' is the multiple of the wager paid for three in a row (0 for the Jackpot, which pays
      * the progressive). Any pair on the first two reels scores 2x, and a single Cherry anywhere earns
-     * a Bonus Spin. With these weights the machine returns roughly 145% of wagers before Bonus Spins
+     * a Bonus Spin. With these weights the machine returns roughly 104% of wagers before Bonus Spins
      * and the progressive, and three Jackpots come up about once in 29,000 spins.
      */
     const SYMBOLS = [
         'cherry'  => ['label' => 'Cherry',  'icon' => "\u{1F352}", 'weight' => 20, 'pays' => 3],
-        'lemon'   => ['label' => 'Lemon',   'icon' => "\u{1F34B}", 'weight' => 40, 'pays' => 10],
+        'lemon'   => ['label' => 'Lemon',   'icon' => "\u{1F34B}", 'weight' => 40, 'pays' => 5],
         'bell'    => ['label' => 'Bell',    'icon' => "\u{1F514}", 'weight' => 12, 'pays' => 50],
         'bar'     => ['label' => 'BAR',     'icon' => 'BAR',       'weight' => 8,  'pays' => 100],
         'diamond' => ['label' => 'Diamond', 'icon' => "\u{1F48E}", 'weight' => 5,  'pays' => 250],

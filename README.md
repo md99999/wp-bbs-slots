@@ -92,7 +92,7 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 | Diamond Diamond Diamond | 250x |
 | BAR BAR BAR | 100x |
 | Bell Bell Bell | 50x |
-| Lemon Lemon Lemon | 10x |
+| Lemon Lemon Lemon | 5x |
 | Cherry Cherry Cherry | 3x |
 | Any pair on the first two reels | 2x |
 | A Cherry anywhere, with no other win | a Bonus Spin |
@@ -149,7 +149,7 @@ on a few spins.
 ### The odds
 
 The reel weights are in `WPBBS_Game::SYMBOLS` in `includes/class-wpbbs-core.php`. Every reel uses
-the same strip. With the shipped weights the machine scores back about 145% of wagers before bonus
+the same strip. With the shipped weights the machine scores back about 104% of wagers before bonus
 spins and the progressive, about 27% of spins win something, and three Jackpots come up roughly once
 in 29,000 spins. Because wins and Cherries hand spins back, a day's 10 spins make about 30 pulls of
 the handle on average.
