@@ -16,7 +16,7 @@ $sym = function ($key, $n = 3) {
         <tr><td><?php echo $sym('diamond'); ?></td><td>250x</td></tr>
         <tr><td><?php echo $sym('bar'); ?></td><td>100x</td></tr>
         <tr><td><?php echo $sym('bell'); ?></td><td>50x</td></tr>
-        <tr><td><?php echo $sym('lemon'); ?></td><td>5x</td></tr>
+        <tr><td><?php echo $sym('lemon'); ?></td><td>10x</td></tr>
         <tr><td><?php echo $sym('cherry'); ?></td><td>3x</td></tr>
         <tr><td>Any pair on the first two reels</td><td>2x</td></tr>
         <tr><td>A Cherry anywhere (with no other win)</td><td>Bonus Spin</td></tr>
