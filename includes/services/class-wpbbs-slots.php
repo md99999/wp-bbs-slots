@@ -27,12 +27,11 @@ class WPBBS_Slots {
     public static function evaluate(array $reels) {
         list($a, $b, $c) = $reels;
         $sym = WPBBS_Game::SYMBOLS;
-        $blank = in_array($a, WPBBS_Game::BLANKS, true);
-        if ($a === $b && $b === $c && !$blank) {
+        if ($a === $b && $b === $c) {
             if ($a === 'jackpot') return ['kind' => 'jackpot', 'multiple' => 0, 'label' => 'Jackpot Jackpot Jackpot'];
             return ['kind' => 'triple', 'multiple' => (int) $sym[$a]['pays'], 'label' => 'Three ' . self::plural($a)];
         }
-        if ($a === $b && !$blank) {
+        if ($a === $b) {
             return ['kind' => 'pair', 'multiple' => WPBBS_Game::PAIR_PAYS, 'label' => 'A pair of ' . self::plural($a)];
         }
         if (in_array('cherry', $reels, true)) {
