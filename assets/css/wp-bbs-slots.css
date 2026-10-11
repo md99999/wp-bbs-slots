@@ -188,6 +188,10 @@
 .wpbbs-game.wpbbs-game .wpbbs-help summary { cursor: pointer; color: var(--wpbbs-gold); }
 .wpbbs-help[open] summary { margin-bottom: 10px; }
 
+/* A blank reel stop: a dim dash and no label. */
+.wpbbs-game.wpbbs-game .wpbbs-sym-blank .wpbbs-sym-icon { font-family: var(--wpbbs-font); color: #b8b2a3; font-weight: bold; }
+.wpbbs-game.wpbbs-game .wpbbs-sym-blank .wpbbs-sym-label { visibility: hidden; }
+
 /* The no-monetary-value notice at the foot of the home and play pages. */
 .wpbbs-notice { border-color: var(--wpbbs-gold); text-align: center; }
 .wpbbs-game.wpbbs-game .wpbbs-notice p { margin: 0; color: var(--wpbbs-gold); }

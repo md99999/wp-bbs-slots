@@ -97,7 +97,7 @@ $s = WPBBS_Settings::all();
 <div class="wpbbs-panel">
     <h3>The reels and the score table</h3>
     <p>Cherries and Lemons come up often, Bells moderately, BARs less often, Diamonds rarely,
-        Sevens very rarely and Jackpots hardly ever.</p>
+        Sevens very rarely and Jackpots hardly ever. Some stops on each reel are blank, and a blank scores nothing.</p>
     <?php include WPBBS_PATH . 'includes/frontend/views/_paytable.php'; ?>
 </div>
 

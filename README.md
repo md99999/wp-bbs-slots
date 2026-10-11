@@ -76,7 +76,7 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 | Symbol | How often |
 |---|---|
 | 🍒 Cherry | often |
-| 🍋 Lemon | often |
+| 🍋 Lemon | often, a little less than Cherries |
 | 🔔 Bell | moderately |
 | BAR | less often |
 | 💎 Diamond | rarely |
@@ -92,8 +92,8 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 | Diamond Diamond Diamond | 250x |
 | BAR BAR BAR | 100x |
 | Bell Bell Bell | 50x |
+| Lemon Lemon Lemon | 30x |
 | Cherry Cherry Cherry | 25x |
-| Lemon Lemon Lemon | 2x |
 | Any pair on the first two reels | 2x |
 | A Cherry anywhere, with no other win | a Bonus Spin |
 
@@ -149,10 +149,11 @@ on a few spins.
 ### The odds
 
 The reel weights are in `WPBBS_Game::SYMBOLS` in `includes/class-wpbbs-core.php`. Every reel uses
-the same strip. With the shipped weights the machine scores back about 102% of wagers before bonus
-spins and the progressive, about 27% of spins win something, and three Jackpots come up roughly once
-in 29,000 spins. Because wins and Cherries hand spins back, a day's 10 spins make about 30 pulls of
-the handle on average.
+the same strip, and some of its stops are **blank** (shown as a dash): a blank scores nothing, never
+makes a pair, and is what keeps a 30x Lemon from flooding the scoreboard. With the shipped weights
+the machine scores back about 102% of wagers before Bonus Spins and the progressive, about one spin
+in eight scores, and three Jackpots come up roughly once in 23,500 spins. Because wins and Cherries
+hand spins back, a day's 10 spins make about 25 pulls of the handle on average.
 
 ---
 

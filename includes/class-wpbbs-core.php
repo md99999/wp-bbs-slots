@@ -114,23 +114,29 @@ class WPBBS_Log {
 
 class WPBBS_Game {
     /**
-     * The reel symbols, most common first.
+     * The reel symbols, most common first, then the blank stops.
      *
      * 'weight' is how many of the reel's stops carry the symbol; every reel uses the same strip.
-     * 'pays' is the multiple of the wager paid for three in a row (0 for the Jackpot, which pays
+     * 'pays' is the multiple of the wager scored for three in a row (0 for the Jackpot, which scores
      * the progressive). Any pair on the first two reels scores 2x, and a single Cherry anywhere earns
-     * a Bonus Spin. With these weights the machine returns roughly 102% of wagers before Bonus Spins
-     * and the progressive, and three Jackpots come up about once in 29,000 spins.
+     * a Bonus Spin. Blank stops score nothing, never make a pair, and keep the scoring in check: with
+     * these weights the machine returns roughly 102% of wagers before Bonus Spins and the
+     * progressive, about one spin in eight scores, and three Jackpots come up about once in 23,500
+     * spins.
      */
     const SYMBOLS = [
         'cherry'  => ['label' => 'Cherry',  'icon' => "\u{1F352}", 'weight' => 20, 'pays' => 25],
-        'lemon'   => ['label' => 'Lemon',   'icon' => "\u{1F34B}", 'weight' => 40, 'pays' => 2],
+        'lemon'   => ['label' => 'Lemon',   'icon' => "\u{1F34B}", 'weight' => 16, 'pays' => 30],
         'bell'    => ['label' => 'Bell',    'icon' => "\u{1F514}", 'weight' => 12, 'pays' => 50],
         'bar'     => ['label' => 'BAR',     'icon' => 'BAR',       'weight' => 8,  'pays' => 100],
         'diamond' => ['label' => 'Diamond', 'icon' => "\u{1F48E}", 'weight' => 5,  'pays' => 250],
         'seven'   => ['label' => 'Lucky Seven', 'icon' => '7',     'weight' => 4,  'pays' => 500],
         'jackpot' => ['label' => 'Jackpot', 'icon' => 'JACKPOT',   'weight' => 3,  'pays' => 0],
+        'blank'   => ['label' => 'Blank',   'icon' => "\u{2014}",  'weight' => 18, 'pays' => 0],
     ];
+
+    /** Symbols that score nothing, alone, in pairs or three in a row. */
+    const BLANKS = ['blank'];
 
     /** Pair multiple: two matching symbols on reels 1 and 2. */
     const PAIR_PAYS = 2;
