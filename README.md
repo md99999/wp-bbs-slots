@@ -93,6 +93,7 @@ rather than opening a public issue. See [SECURITY.md](SECURITY.md).
 | BAR BAR BAR | 100x |
 | Bell Bell Bell | 50x |
 | Cherry Cherry Cherry | 25x |
+| Lemon Lemon Lemon | 2x |
 | Any pair on the first two reels | 2x |
 | A Cherry anywhere, with no other win | a Bonus Spin |
 
