@@ -10,6 +10,8 @@ $s = WPBBS_Settings::all();
 <?php if (is_user_logged_in() && !$p) include WPBBS_PATH . 'includes/frontend/views/_name-form.php'; ?>
 
 <div class="wpbbs-panel wpbbs-hero">
+    <img class="wpbbs-logo" src="<?php echo esc_url(WPBBS_URL . 'assets/img/wp-bbs-slots-logo.svg'); ?>"
+         width="400" height="400" alt="<?php echo esc_attr(WPBBS_GAME_NAME); ?>!">
     <p class="wpbbs-jackpot-label">Progressive Jackpot</p>
     <p class="wpbbs-jackpot-small" data-wpbbs="jackpot"><?php echo esc_html(WPBBS_Game::fmt(WPBBS_Game::jackpot())); ?></p>
     <h2>Welcome to <?php echo esc_html(WPBBS_GAME_NAME); ?></h2>

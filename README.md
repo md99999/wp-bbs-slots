@@ -450,11 +450,12 @@ sql/schema.php                database schema (applied with dbDelta and the site
 includes/class-wpbbs-core.php settings, table names, logging, symbols, wagers, ranks
 includes/class-wpbbs-health.php warns if the install came from a clone or a branch-named zip
 tools/build-zip.php           builds an installable zip with PHP alone (not shipped in releases)
+tools/build-logo.py           draws the ANSI-art logo in assets/img (not shipped in releases)
 includes/services/            players, the machine (spins, scores, jackpot, bailout),
                               Hall of Fame records, daily maintenance
 includes/frontend/            shortcodes, form and AJAX handlers, UI helpers, page views
 admin/                        wp-admin screens
-assets/                       stylesheet and the reel-spinning JavaScript
+assets/                       stylesheet, the reel-spinning JavaScript and the logo (img/, SVG and PNG)
 maintenance/                  optional CLI script for a system cron
 ```
 
