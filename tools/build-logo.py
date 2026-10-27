@@ -21,6 +21,8 @@ FONT = {  # 5x7 bitmaps
     'N': ["10001", "11001", "10101", "10011", "10001", "10001", "10001"],
     'D': ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
     'R': ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
+    "'": ["00100", "00100", "01000", "00000", "00000", "00000", "00000"],
+    'Y': ["10001", "10001", "01010", "00100", "00100", "00100", "00100"],
     '7': ["11111", "00001", "00010", "00100", "00100", "00100", "00100"],
     ' ': ["00000"] * 7,
 }
@@ -103,8 +105,8 @@ for k, col in enumerate([RED, YELLOW, CYAN]):
     text('7', gx, gy, sc7, [col], shadow=DGRAY)
 
 # Tag line.
-tag, sct = 'PULL THE HANDLE!', 3
-text(tag, (W - width(tag, sct)) // 2, 352, sct, [GREEN, GREEN, GREEN, GREEN, CYAN, CYAN, CYAN])
+tag, sct = "LET'S PLAY", 4
+text(tag, (W - width(tag, sct)) // 2, 349, sct, [GREEN, GREEN, GREEN, GREEN, CYAN, CYAN, CYAN])
 
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{W}" viewBox="0 0 {W} {W}" '
        f'shape-rendering="crispEdges" role="img" aria-labelledby="t">'
