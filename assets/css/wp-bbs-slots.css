@@ -123,8 +123,10 @@
 .wpbbs-hero ul, .wpbbs-hero ol { text-align: left; }
 /* The ANSI-art logo: 400px square, shrinking to fit a narrow column, with crisp pixels when scaled. */
 .wpbbs-game .wpbbs-logo { display: block; width: 400px; max-width: 100%; height: auto; margin: 0 auto; image-rendering: pixelated; border: 0; }
-/* Home page top row: the logo on the left, the progressive on the right; stacked on narrow screens. */
-.wpbbs-hero-top { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 20px; align-items: center; margin-bottom: 18px; }
+/* Home page top row: the logo on the left; the progressive and the welcome on the right; stacked on narrow screens. */
+.wpbbs-hero-top { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 24px; align-items: center; }
+.wpbbs-game.wpbbs-game .wpbbs-hero-side h2 { margin-top: 18px; }
+.wpbbs-game.wpbbs-game .wpbbs-hero-side p:last-child { margin-bottom: 0; }
 .wpbbs-game.wpbbs-game .wpbbs-hero-jackpot { display: block; margin: 0; padding: 18px 16px; }
 .wpbbs-game.wpbbs-game .wpbbs-hero-jackpot p:last-child { margin: 0; }
 @media (max-width: 760px) { .wpbbs-hero-top { grid-template-columns: 1fr; } }

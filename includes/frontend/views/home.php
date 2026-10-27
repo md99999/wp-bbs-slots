@@ -13,21 +13,23 @@ $s = WPBBS_Settings::all();
     <div class="wpbbs-hero-top">
         <img class="wpbbs-logo" src="<?php echo esc_url(WPBBS_URL . 'assets/img/wp-bbs-slots-logo.svg'); ?>"
              width="400" height="400" alt="<?php echo esc_attr(WPBBS_GAME_NAME); ?>!">
-        <div class="wpbbs-jackpot-box wpbbs-hero-jackpot">
-            <p class="wpbbs-jackpot-label">Progressive Jackpot</p>
-            <p class="wpbbs-jackpot" data-wpbbs="jackpot"><?php echo esc_html(WPBBS_Game::fmt(WPBBS_Game::jackpot())); ?></p>
-            <p class="wpbbs-small wpbbs-dim">Grows with every spin. Three Jackpots win it all.</p>
+        <div class="wpbbs-hero-side">
+            <div class="wpbbs-jackpot-box wpbbs-hero-jackpot">
+                <p class="wpbbs-jackpot-label">Progressive Jackpot</p>
+                <p class="wpbbs-jackpot" data-wpbbs="jackpot"><?php echo esc_html(WPBBS_Game::fmt(WPBBS_Game::jackpot())); ?></p>
+                <p class="wpbbs-small wpbbs-dim">Grows with every spin. Three Jackpots win it all.</p>
+            </div>
+            <h2>Welcome to <?php echo esc_html(WPBBS_GAME_NAME); ?></h2>
+            <p>A three-reel slot machine in the spirit of the BBS door games: a handful of spins a day, a bankroll that
+                carries over from one day to the next, and a progressive jackpot that grows with every pull of the handle
+                until somebody lines up three Jackpots.</p>
+            <?php if ($p) : ?>
+                <p><a class="wpbbs-btn wpbbs-btn-big" href="<?php echo esc_url(WPBBS_UI::url('play')); ?>">Play now</a></p>
+            <?php elseif (!is_user_logged_in()) : ?>
+                <?php echo WPBBS_UI::sign_in_buttons(); ?>
+            <?php endif; ?>
         </div>
     </div>
-    <h2>Welcome to <?php echo esc_html(WPBBS_GAME_NAME); ?></h2>
-    <p>A three-reel slot machine in the spirit of the BBS door games: a handful of spins a day, a bankroll that
-        carries over from one day to the next, and a progressive jackpot that grows with every pull of the handle
-        until somebody lines up three Jackpots.</p>
-    <?php if ($p) : ?>
-        <p><a class="wpbbs-btn wpbbs-btn-big" href="<?php echo esc_url(WPBBS_UI::url('play')); ?>">Play now</a></p>
-    <?php elseif (!is_user_logged_in()) : ?>
-        <?php echo WPBBS_UI::sign_in_buttons(); ?>
-    <?php endif; ?>
 </div>
 
 <div class="wpbbs-grid">
