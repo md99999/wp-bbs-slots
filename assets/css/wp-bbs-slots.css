@@ -122,7 +122,12 @@
 .wpbbs-hero, .wpbbs-masthead, .wpbbs-machine { text-align: center; }
 .wpbbs-hero ul, .wpbbs-hero ol { text-align: left; }
 /* The ANSI-art logo: 400px square, shrinking to fit a narrow column, with crisp pixels when scaled. */
-.wpbbs-game .wpbbs-logo { display: block; width: 400px; max-width: 100%; height: auto; margin: 0 auto 14px; image-rendering: pixelated; border: 0; }
+.wpbbs-game .wpbbs-logo { display: block; width: 400px; max-width: 100%; height: auto; margin: 0 auto; image-rendering: pixelated; border: 0; }
+/* Home page top row: the logo on the left, the progressive on the right; stacked on narrow screens. */
+.wpbbs-hero-top { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 20px; align-items: center; margin-bottom: 18px; }
+.wpbbs-game.wpbbs-game .wpbbs-hero-jackpot { display: block; margin: 0; padding: 18px 16px; }
+.wpbbs-game.wpbbs-game .wpbbs-hero-jackpot p:last-child { margin: 0; }
+@media (max-width: 760px) { .wpbbs-hero-top { grid-template-columns: 1fr; } }
 .wpbbs-game.wpbbs-game .wpbbs-jackpot-label { margin: 0; color: var(--wpbbs-magenta); letter-spacing: .2em; text-transform: uppercase; font-size: .85em; }
 .wpbbs-game.wpbbs-game .wpbbs-jackpot {
   font-size: clamp(2em, 7vw, 3.4em); color: var(--wpbbs-gold); margin: .1em 0 .3em; letter-spacing: .04em;

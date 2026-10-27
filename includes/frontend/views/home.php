@@ -10,10 +10,15 @@ $s = WPBBS_Settings::all();
 <?php if (is_user_logged_in() && !$p) include WPBBS_PATH . 'includes/frontend/views/_name-form.php'; ?>
 
 <div class="wpbbs-panel wpbbs-hero">
-    <img class="wpbbs-logo" src="<?php echo esc_url(WPBBS_URL . 'assets/img/wp-bbs-slots-logo.svg'); ?>"
-         width="400" height="400" alt="<?php echo esc_attr(WPBBS_GAME_NAME); ?>!">
-    <p class="wpbbs-jackpot-label">Progressive Jackpot</p>
-    <p class="wpbbs-jackpot-small" data-wpbbs="jackpot"><?php echo esc_html(WPBBS_Game::fmt(WPBBS_Game::jackpot())); ?></p>
+    <div class="wpbbs-hero-top">
+        <img class="wpbbs-logo" src="<?php echo esc_url(WPBBS_URL . 'assets/img/wp-bbs-slots-logo.svg'); ?>"
+             width="400" height="400" alt="<?php echo esc_attr(WPBBS_GAME_NAME); ?>!">
+        <div class="wpbbs-jackpot-box wpbbs-hero-jackpot">
+            <p class="wpbbs-jackpot-label">Progressive Jackpot</p>
+            <p class="wpbbs-jackpot" data-wpbbs="jackpot"><?php echo esc_html(WPBBS_Game::fmt(WPBBS_Game::jackpot())); ?></p>
+            <p class="wpbbs-small wpbbs-dim">Grows with every spin. Three Jackpots win it all.</p>
+        </div>
+    </div>
     <h2>Welcome to <?php echo esc_html(WPBBS_GAME_NAME); ?></h2>
     <p>A three-reel slot machine in the spirit of the BBS door games: a handful of spins a day, a bankroll that
         carries over from one day to the next, and a progressive jackpot that grows with every pull of the handle
