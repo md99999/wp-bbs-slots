@@ -159,7 +159,7 @@ the handle on average.
 ## Requirements
 
 - WordPress 7.0 or later
-- PHP 8.0 or later
+- PHP 8.0 or later, 64-bit (the usual build; scores and the jackpot need 64-bit integers)
 - MySQL 5.7+ / 8.x or MariaDB 10.3+ (the standard WordPress database)
 
 ---
@@ -408,7 +408,7 @@ Or run the game's job directly, once a day at your site's midnight (cron uses th
 often UTC):
 
 ```bash
-php /path/to/wordpress/wp-content/plugins/wp-bbs-slots/maintenance/daily_maintenance.php
+php /path/to/wordpress/wp-content/plugins/wp-bbs-slots/maintenance/daily_maintenance.php --wp-path=/path/to/wordpress
 ```
 
 Running both is safe: the job takes a database lock and refuses to run twice on the same day. The

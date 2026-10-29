@@ -78,7 +78,7 @@ $cmd = function ($command) {
 
     <h3>Alternative: run the game's daily job directly</h3>
     <p>Run this once a day at your site's midnight (cPanel: <em>Once Per Day</em>, then set the hour):</p>
-    <?php $cmd($php_bin . ' ' . $daily_php); ?>
+    <?php $cmd($php_bin . ' ' . $daily_php . ' --wp-path=' . untrailingslashit(ABSPATH)); ?>
     <p class="description">Cron follows the <em>server's</em> clock, often UTC, while the game uses the timezone in Settings &rarr; General
         (currently <code><?php echo esc_html(wp_timezone_string()); ?></code>, where it is now <?php echo esc_html(current_time('H:i')); ?>).
         Choose the hour that matches your local midnight.</p>

@@ -84,17 +84,25 @@ class WPBBS_Slots {
 
         // MySQL applies these left to right, so best_streak and peak_bankroll see the new values, and
         // days_played counts the day before today_spins moves off zero.
-        $wpdb->query($wpdb->prepare(
-            "UPDATE $t SET days_played = days_played + IF(today_spins = 0, 1, 0), bankroll = bankroll + %d, spins_left = spins_left + %d, last_bet = %d,
+        // The bankroll is capped at MAX_SCORE so a win can never push it past what the column holds.
+        $settled = $wpdb->query($wpdb->prepare(
+            "UPDATE $t SET days_played = days_played + IF(today_spins = 0, 1, 0), bankroll = LEAST(bankroll + %d, %d), spins_left = spins_left + %d, last_bet = %d,
                 today_spins = today_spins + 1, today_won = today_won + %d,
                 total_spins = total_spins + 1, total_wins = total_wins + %d, total_won = total_won + %d,
                 biggest_win = GREATEST(biggest_win, %d),
                 current_streak = IF(%d = 1, current_streak + 1, 0), best_streak = GREATEST(best_streak, current_streak),
                 jackpots_won = jackpots_won + %d, peak_bankroll = GREATEST(peak_bankroll, bankroll), last_played = %s
              WHERE id = %d",
-            $win, $bonus, $bet, $win, $won ? 1 : 0, $win, $win, $won ? 1 : 0,
+            $win, WPBBS_Game::MAX_SCORE, $bonus, $bet, $win, $won ? 1 : 0, $win, $win, $won ? 1 : 0,
             $result['kind'] === 'jackpot' ? 1 : 0, $now, $p->id
         ));
+        if ($settled === false) {
+            // Never leave a player charged for a spin that was not paid out: hand back the wager and the spin.
+            $wpdb->query($wpdb->prepare("UPDATE $t SET bankroll = LEAST(bankroll + %d, %d), spins_left = spins_left + 1 WHERE id = %d",
+                $bet, WPBBS_Game::MAX_SCORE, $p->id));
+            WPBBS_Log::admin('error', sprintf('Spin for player #%d could not be saved: %s', $p->id, $wpdb->last_error));
+            throw new WPBBS_Exception('That spin could not be saved, so your wager and spin have been returned. Please try again.');
+        }
 
         $p = WPBBS_Player::fresh($p->id);
         $news = self::record_spin($p, $reels, $result, $bet, $win);

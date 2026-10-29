@@ -8,7 +8,7 @@ It finds and loads WordPress by itself, so it can be run from any directory, onc
 site's midnight:
 
 ```
-php /path/to/wordpress/wp-content/plugins/wp-bbs-slots/maintenance/daily_maintenance.php
+php /path/to/wordpress/wp-content/plugins/wp-bbs-slots/maintenance/daily_maintenance.php --wp-path=/path/to/wordpress
 ```
 
 Running it alongside WP-Cron is safe: the job takes a database lock before it does anything and

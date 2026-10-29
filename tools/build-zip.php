@@ -52,6 +52,11 @@ $files = new RecursiveIteratorIterator(
     new RecursiveCallbackFilterIterator(
         new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS),
         function ($file) use ($skip_dirs) {
+            // A symlink could point anywhere (wp-config.php, say); its target never goes in the zip.
+            if ($file->isLink()) {
+                fwrite(STDERR, 'Skipped symlink: ' . $file->getPathname() . "\n");
+                return false;
+            }
             if (!$file->isDir()) return true;
             // Any git folder (.git, .github and the like) as well as the named ones.
             return !in_array($file->getFilename(), $skip_dirs, true) && stripos($file->getFilename(), '.git') !== 0;
