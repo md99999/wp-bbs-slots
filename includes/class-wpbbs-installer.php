@@ -4,6 +4,11 @@ if (!defined('ABSPATH')) exit;
 class WPBBS_Installer {
 
     public static function activate() {
+        // Scores and the jackpot need 64-bit integers: on 32-bit PHP they stop at 2,147,483,647.
+        if (PHP_INT_SIZE < 8) {
+            deactivate_plugins(plugin_basename(WPBBS_FILE));
+            wp_die(esc_html(WPBBS_GAME_NAME) . ' needs a 64-bit build of PHP; this server runs a 32-bit one.', 'Plugin not activated', ['back_link' => true]);
+        }
         self::install_schema();
         if (get_option(WPBBS_Settings::OPTION) === false) {
             update_option(WPBBS_Settings::OPTION, WPBBS_Settings::defaults());

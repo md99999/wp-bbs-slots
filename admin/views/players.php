@@ -24,7 +24,7 @@ $players = $wpdb->get_results('SELECT * FROM ' . WPBBS_DB::t('players') . ' ORDE
             <td>
                 <?php echo WPBBS_Admin::form_open('player_update'); ?>
                     <input type="hidden" name="player_id" value="<?php echo (int) $pl->id; ?>">
-                    <input type="number" name="bankroll" value="<?php echo (int) $pl->bankroll; ?>" class="small-text" min="0" title="Score (bankroll)" aria-label="Score">
+                    <input type="number" name="bankroll" value="<?php echo (int) $pl->bankroll; ?>" class="small-text" min="0" max="<?php echo (int) WPBBS_Game::MAX_SCORE; ?>" title="Score (bankroll)" aria-label="Score">
                     <input type="number" name="spins_left" value="<?php echo (int) $pl->spins_left; ?>" class="small-text" min="0" max="1000" title="Spins left today" aria-label="Spins left">
                     <input type="number" name="days_played" value="<?php echo (int) $pl->days_played; ?>" class="small-text" min="0" title="Days played (counts toward rank)" aria-label="Days played">
                     <button class="button button-small">Save</button>

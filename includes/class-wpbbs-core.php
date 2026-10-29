@@ -132,6 +132,13 @@ class WPBBS_Game {
         'jackpot' => ['label' => 'Jackpot', 'icon' => 'JACKPOT',   'weight' => 3,  'pays' => 0],
     ];
 
+    /**
+     * The highest score a bankroll may hold: a thousand trillion. Far beyond anything play can reach,
+     * well inside MySQL's BIGINT (9.2 x 10^18), and small enough that the browser's JavaScript shows
+     * it exactly (2^53 is about 9 x 10^15).
+     */
+    const MAX_SCORE = 1000000000000000;
+
     /** Pair multiple: two matching symbols on reels 1 and 2. */
     const PAIR_PAYS = 2;
 

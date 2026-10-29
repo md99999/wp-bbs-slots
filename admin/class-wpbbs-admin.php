@@ -233,7 +233,7 @@ class WPBBS_Admin {
         $id = (int) self::post('player_id');
         $p = WPBBS_Player::fresh($id);
         if (!$p) throw new WPBBS_Exception('Player not found.');
-        $bankroll = max(0, (int) self::post('bankroll'));
+        $bankroll = max(0, min(WPBBS_Game::MAX_SCORE, (int) self::post('bankroll')));
         $days = max(0, min(100000, (int) self::post('days_played', (string) $p->days_played)));
         // Ranks only go up: an edit can earn a higher one, never take one away.
         $level = max((int) $p->rank_level, WPBBS_Game::rank_for(max((int) $p->peak_bankroll, $bankroll), $days));
