@@ -160,6 +160,8 @@ class WPBBS_Player {
             'user_id' => (int) $user_id, 'player_name' => $name,
             'bankroll' => (int) $s['starting_bankroll'], 'peak_bankroll' => (int) $s['starting_bankroll'],
             'spins_left' => (int) $s['turns_per_day'], 'spins_date' => $today, 'topup_date' => $today,
+            // The join news already says they pulled up a stool, so today's arrival is not reported twice.
+            'started_date' => $today,
             'last_bet' => WPBBS_Game::min_bet(), 'created_at' => $now, 'last_seen' => $now,
         ]);
         // The unique keys catch a name or account claimed a moment ago by another request.

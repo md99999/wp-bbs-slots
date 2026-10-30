@@ -50,6 +50,7 @@ $top = WPBBS_Player::top(20);
 $labels = [
     'new_player' => 'New player', 'jackpot' => 'JACKPOT', 'big_win' => 'Big win', 'record' => 'Record',
     'rank' => 'Rank', 'bailout' => 'Bailout', 'topup' => 'New day', 'season' => 'New season', 'promotion' => 'Promotion',
+    'day_start' => 'At the machine', 'day_end' => 'Day done',
 ];
 ?>
 <div class="wpbbs-panel wpbbs-masthead">

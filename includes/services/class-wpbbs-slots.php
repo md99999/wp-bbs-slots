@@ -69,6 +69,9 @@ class WPBBS_Slots {
         ));
         if (!$took) throw new WPBBS_Exception('That spin did not go through. Please try again.');
 
+        // The first spin of the day goes in the Gazette, with what the player sat down with.
+        self::announce_start($p);
+
         // Every spin feeds the progressive.
         $wpdb->query($wpdb->prepare(
             'UPDATE ' . WPBBS_DB::t('state') . ' SET state_value = state_value + %d, updated_at = %s WHERE state_key = %s',
@@ -121,6 +124,9 @@ class WPBBS_Slots {
 
         $bailout = self::maybe_bailout($p);
         if ($bailout) $p = WPBBS_Player::fresh($p->id);
+
+        // The last spin of the day (or running out of credits with no bailout left) goes in the Gazette.
+        self::announce_finish($p);
 
         return [
             'reels'      => $reels,
@@ -176,6 +182,58 @@ class WPBBS_Slots {
         if (!$done) return '';
         WPBBS_Log::news('bailout', sprintf('%s ran low and took the daily bailout of %s credits.', $p->player_name, WPBBS_Game::fmt($amount)), $p->id);
         return sprintf('Your bankroll ran low, so the house has given you today\'s one-time bailout of %s credits to finish your spins. There is only one bailout a day.', WPBBS_Game::fmt($amount));
+    }
+
+    /**
+     * Reports the player's first spin of the day in the Gazette, with the bankroll and spins they
+     * had before it. Claimed with a guarded update, like the bailout, so two spins at the same
+     * moment cannot both report it. $p is the player as read before the wager was taken.
+     */
+    private static function announce_start($p) {
+        global $wpdb;
+        $today = WPBBS_Game::today();
+        // today_spins only moves once a spin is settled, so it is still 0 here on the day's first spin.
+        if ($p->started_date === $today || (int) $p->today_spins !== 0) return;
+        $done = $wpdb->query($wpdb->prepare(
+            'UPDATE ' . WPBBS_DB::t('players') . ' SET started_date = %s
+             WHERE id = %d AND today_spins = 0 AND (started_date IS NULL OR started_date <> %s)',
+            $today, $p->id, $today
+        ));
+        if (!$done) return;
+        $spins = (int) $p->spins_left;
+        WPBBS_Log::news('day_start', sprintf('%s pulled up a stool at the machine with %s credits and %d %s to play.',
+            $p->player_name, WPBBS_Game::fmt($p->bankroll), $spins, $spins === 1 ? 'spin' : 'spins'), $p->id);
+    }
+
+    /**
+     * Reports the end of the player's day in the Gazette, once a day, with their score: either
+     * their last spin is played, or they cannot cover the smallest wager and today's bailout is
+     * spent (or switched off). $p is the player as it stands after the spin and any bailout.
+     */
+    private static function announce_finish($p) {
+        global $wpdb;
+        $today = WPBBS_Game::today();
+        $spins = (int) $p->spins_left;
+        $min = WPBBS_Game::min_bet();
+        $broke = $spins > 0 && (int) $p->bankroll < $min;
+        if (($spins > 0 && !$broke) || $p->finished_date === $today) return;
+        // The guard re-checks the same condition in the database, so only the request that ends the day reports it.
+        $done = $wpdb->query($wpdb->prepare(
+            'UPDATE ' . WPBBS_DB::t('players') . ' SET finished_date = %s
+             WHERE id = %d AND (spins_left <= 0 OR bankroll < %d) AND (finished_date IS NULL OR finished_date <> %s)',
+            $today, $p->id, $min, $today
+        ));
+        if (!$done) return;
+        $played = (int) $p->today_spins;
+        $summary = sprintf('%s credits won today over %d %s', WPBBS_Game::fmt($p->today_won), $played, $played === 1 ? 'spin' : 'spins');
+        if ($broke) {
+            $message = sprintf('%s ran dry with %d %s unplayed and stepped away from the machine with a score of %s credits (%s).',
+                $p->player_name, $spins, $spins === 1 ? 'spin' : 'spins', WPBBS_Game::fmt($p->bankroll), $summary);
+        } else {
+            $message = sprintf('%s played the last spin of the day and stepped away from the machine with a score of %s credits (%s).',
+                $p->player_name, WPBBS_Game::fmt($p->bankroll), $summary);
+        }
+        WPBBS_Log::news('day_end', $message, $p->id);
     }
 
     /** Hall of Fame and Gazette bookkeeping after a spin. Returns lines worth showing the player. */

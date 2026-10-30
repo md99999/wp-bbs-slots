@@ -18,6 +18,8 @@ CREATE TABLE {prefix}wpbbs_players (
   spins_date date DEFAULT NULL,
   topup_date date DEFAULT NULL,
   bailout_date date DEFAULT NULL,
+  started_date date DEFAULT NULL,
+  finished_date date DEFAULT NULL,
   last_bet int(11) NOT NULL DEFAULT 100,
   today_spins int(11) NOT NULL DEFAULT 0,
   today_won bigint(20) NOT NULL DEFAULT 0,

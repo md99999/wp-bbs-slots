@@ -342,8 +342,9 @@ Site Editor's template parts on block themes; or a page builder's Shortcode elem
 
 The Gazette shows where the progressive stands, **who played today** (with their spins, winnings and
 score), the **top 20 scores**, and the news: new players, big wins (50,000 or more by default),
-jackpots, new Hall of Fame records, the first player to reach each rank, bailouts and the daily
-top-up. News is kept for 30 days by default. Its masthead is the `WPBBS_GAZETTE_NAME` constant in
+jackpots, new Hall of Fame records, the first player to reach each rank, bailouts, the daily
+top-up, each player's first spin of the day (with the credits and spins they sat down with) and the
+end of their day (their last spin, or running out of credits, with their score). News is kept for 30 days by default. Its masthead is the `WPBBS_GAZETTE_NAME` constant in
 the plugin's main file.
 
 ### The Hall of Fame
@@ -465,7 +466,7 @@ All tables use the site's table prefix (shown as `wp_`).
 
 | Table | Contents |
 |---|---|
-| wp_wpbbs_players | one row per player: WordPress user, player name, bankroll, spins, dates of the last top-up and bailout, last wager, rank reached and days played, today's play and lifetime stats |
+| wp_wpbbs_players | one row per player: WordPress user, player name, bankroll, spins, dates of the last top-up and bailout, the dates their day's play was last started and finished, last wager, rank reached and days played, today's play and lifetime stats |
 | wp_wpbbs_state | the progressive jackpot |
 | wp_wpbbs_jackpots | every jackpot won |
 | wp_wpbbs_records | Hall of Fame records: highest spin, longest streak, first to each rank |
