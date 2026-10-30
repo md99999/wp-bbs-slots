@@ -277,7 +277,7 @@ class WPBBS_Admin {
         $today = WPBBS_Game::today();
         $count = (int) $wpdb->query($wpdb->prepare(
             'UPDATE ' . WPBBS_DB::t('players') . ' SET bankroll = %d, peak_bankroll = %d, spins_left = %d, spins_date = %s, topup_date = %s,
-                bailout_date = NULL, last_bet = %d, today_spins = 0, today_won = 0, total_spins = 0, total_wins = 0, total_won = 0,
+                bailout_date = NULL, started_date = NULL, finished_date = NULL, last_bet = %d, today_spins = 0, today_won = 0, total_spins = 0, total_wins = 0, total_won = 0,
                 biggest_win = 0, current_streak = 0, best_streak = 0, jackpots_won = 0',
             $s['starting_bankroll'], $s['starting_bankroll'], $s['turns_per_day'], $today, $today, WPBBS_Game::min_bet()
         ));
